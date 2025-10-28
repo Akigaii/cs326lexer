@@ -109,8 +109,6 @@ public class Main {
         TokenTypes.add(new Token(66, "IDENTIFIER", ""));
 
 
-
-
         ArrayList<Token> LexedTokens = new ArrayList<>();
         String filePath = "/Users/xmastersteel/IdeaProjects/Lexer/src/test.txt";
 
@@ -131,10 +129,18 @@ public class Main {
                 if (ascii == -1) break;
 
                 // EDGE CASE: If ASCII is a ' ' or a '\n', disregard.
-                if (ascii == 32 || ascii == 10) {
-                    Candidates.clear(); // If a space is encountered, then it cannot be a keyword.
+                if (character == ' ' || character == '\n') {
+//                    Candidates.clear(); // If a space is encountered, then it cannot be a keyword.
                     System.out.println("Char: " +  " [" + character + " ]");
                     System.out.println("Space encountered, clearing the candidates.");
+                    System.out.println("temp " + temp);
+
+                    if (!temp.isEmpty()) {
+                        Token token = new Token(66, "Identifier", temp);
+                        LexedTokens.add(token);
+                    }
+
+                    temp = "";
                     continue;
                 }
 
@@ -274,7 +280,7 @@ public class Main {
                                 char tempCharacter = (char) tempAscii;
                                 readerPosition++;
                                 temp = temp + tempCharacter;
-                                System.out.println("Temp: " + temp);
+//                                System.out.println("Temp: " + temp);
                             }
                             Token token = new Token(64, "INTEGER", temp);
                             LexedTokens.add(token);
@@ -311,13 +317,13 @@ public class Main {
                         while(true) { // Loop through every character in the input file.
                             // Read the character as an ASCII
                             int tempAscii = tempReader.read();
-                            System.out.println("tempAscii: " + tempAscii);
+//                            System.out.println("tempAscii: " + tempAscii);
 //                            if (tempAscii == 32 || tempAscii == 10) {break;}
                             if (!((tempAscii >= 65 && tempAscii <= 90) || (tempAscii >= 97 && tempAscii <= 122) || (tempAscii >= 48 && tempAscii <= 57))) break;
                             lookAhead++;
                         }
 
-                        System.out.println("lookAhead: " + lookAhead);
+//                        System.out.println("lookAhead: " + lookAhead);
 
                         for (int i = 0; i < lookAhead; i++) {
                             int tempAscii = reader.read();

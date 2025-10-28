@@ -1,1 +1,3 @@
-int x kofe test output 23.&
+output
+int x kofe. int. integer.
+integer
