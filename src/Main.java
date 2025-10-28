@@ -108,12 +108,10 @@ public class Main {
         TokenTypes.add(new Token(65, "DECIMAL", ""));
         TokenTypes.add(new Token(66, "IDENTIFIER", ""));
 
-
         ArrayList<Token> LexedTokens = new ArrayList<>();
         String filePath = "/Users/xmastersteel/IdeaProjects/Lexer/src/test.txt";
 
         try{
-
             int readerPosition = 0; // Tracks which character the reader is on in the input file.
             String temp = "";       // Temporary string to contain char buffers.
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -222,11 +220,29 @@ public class Main {
 //
                         match = true;
                         System.out.println("Candidate found: " + Candidates.get(i).value);
+                        System.out.println("Temp: " + temp);
 
-                        // Create new token, and add it to found tokens.
-                        Token token = new Token(Candidates.get(i).category, Candidates.get(i).categoryName, Candidates.get(i).value);
-                        LexedTokens.add(token);
-                        temp = "";
+                        if (temp.equals("not") || temp.equals("Not")){
+                            System.out.println("TRIGGERED " + Candidates.get(i).value);
+                            BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
+                            tempReader.skip(readerPosition); // Lookahead.
+                            if (tempReader.read() == '='){
+                                int tempAscii = reader.read();
+                                temp = temp + (char)tempAscii;
+                                readerPosition++;
+                                LexedTokens.add(new Token(63, "NOTEQUALS_operator", temp));
+                                temp = "";
+                                break;
+                            }
+                        }
+                        else{
+                            // Create new token, and add it to found tokens.
+                            Token token = new Token(Candidates.get(i).category, Candidates.get(i).categoryName, Candidates.get(i).value);
+                            LexedTokens.add(token);
+                            temp = "";
+                        }
+
+
 
                         // Repopulate the Candidates ArrayList.
                         Candidates.clear();

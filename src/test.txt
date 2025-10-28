@@ -1,3 +1,5 @@
-output
-int x kofe. int. integer.
-integer
+not
+not=
+not =
+test
+integeroutput t

@@ -2,19 +2,74 @@ grammar Quorum;
 
 //channels { WHITESPACE_CHANNEL, COMMENT_CHANNEL }
 
-start:
-    program EOF;
-
-program
-    :   (ID | INT | DECIMAL | STRING | BOOLEAN | IF | ELSE | CREATE | RETURN | OUTPUT | INPUT | ON | CLASS | ME
-    | PUBLIC | PRIVATE | WHILE | END | PACKAGE_NAME | REPEAT
-    | TIMES | UNTIL | STATIC | ACTION | COLON | PERIOD | COMMA
-    | GREATER | LESS | GREATER_EQUAL | LESS_EQUAL | PLUS | MINUS | MULTIPLY
-    | DIVIDE | MODULO | EQUALITY | NOTEQUALS | AND | OR | NOT | NULL | USE
-    | CONSTANT | ALERT | DETECT | ALWAYS | CHECK | PARENT | BLUEPRINT | NATIVE
-     | INHERITS | CAST | NOW | SAY)*
+start
+    : (OUTPUT
+    | ON
+    | CREATE
+    | CONSTANT
+    | ELSE_IF
+    | ME
+    | UNTIL
+    | PUBLIC
+    | PRIVATE
+    | ALERT
+    | DETECT
+    | ALWAYS
+    | CHECK
+    | PARENT
+    | BLUEPRINT
+    | NATIVE
+    | INHERITS
+    | CAST
+    | INPUT
+    | SAY
+    | NOW
+    | WHILE
+    | PACKAGE_NAME
+    | TIMES
+    | REPEAT
+    | ELSE
+    | RETURNS
+    | RETURN
+    | AND
+    | OR
+    | NULL
+    | STATIC
+    | ACTION
+    | COLON
+    | INTEGER_KEYWORD
+    | NUMBER_KEYWORD
+    | TEXT
+    | BOOLEAN_KEYWORD
+    | USE
+    | NOT
+    | NOTEQUALS
+    | PERIOD
+    | COMMA
+    | EQUALITY
+    | GREATER
+    | GREATER_EQUAL
+    | LESS
+    | LESS_EQUAL
+    | PLUS
+    | MINUS
+    | MULTIPLY
+    | DIVIDE
+    | MODULO
+    | LEFT_SQR_BRACE
+    | RIGHT_SQR_BRACE
+    | LEFT_PAREN
+    | RIGHT_PAREN
+    | DOUBLE_QUOTE
+    | IF
+    | END
+    | CLASS
+    | BOOLEAN
+    | INT
+    | DECIMAL
+    | ID
+    )* EOF
     ;
-
 
 OUTPUT	:	'output';
 ON	    :	'on';
