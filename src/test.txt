@@ -1,5 +1,38 @@
-not
-not=
-not =
-test
-integeroutput t
+package MyPackage
+
+public class ExampleBlueprint inherits Parent is
+    constant integer counter = 10
+    private number value = 3.14
+    text message = "Hello world!"
+
+    action main returns integer
+        say "Starting program..." 
+        input userInput
+
+        if userInput > 5 and not (counter <= 10)
+            output "Invalid input"
+        elseif userInput = 5
+            alert "Exact match"
+        else
+            detect "Unknown case"
+        end
+
+        repeat 3 times
+            say "Loop iteration: " + counter
+            counter = counter + 1
+        end
+
+        // Testing boolean
+        always check true or false
+
+        /* Multi-line comment test
+           BLUEPRINT and NATIVE keywords below
+        */
+        blueprint system uses native
+
+        // INVALID chars below (should cause lexer errors)
+        @value = value $ 2
+
+        return counter
+    end
+end

@@ -68,6 +68,7 @@ start
     | INT
     | DECIMAL
     | ID
+    | STRING
     )* EOF
     ;
 

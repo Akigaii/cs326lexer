@@ -51,7 +51,7 @@ public class Main {
         TokenTypes.add(new Token(14, "PARENT_Keyword", "parent"));
         TokenTypes.add(new Token(15, "BLUEPRINT_Keyword", "blueprint"));
         TokenTypes.add(new Token(16, "SYSTEM_Keyword", "system"));
-        TokenTypes.add(new Token(17, "IS_Keyword", "is"));
+        TokenTypes.add(new Token(17, "INHERITS_Keyword", "is"));
         TokenTypes.add(new Token(18, "CAST_Keyword", "cast"));
         TokenTypes.add(new Token(19, "INPUT_Keyword", "input"));
         TokenTypes.add(new Token(20, "SAY_Keyword", "say"));
@@ -107,6 +107,9 @@ public class Main {
         TokenTypes.add(new Token(64, "INT", ""));
         TokenTypes.add(new Token(65, "DECIMAL", ""));
         TokenTypes.add(new Token(66, "IDENTIFIER", ""));
+        TokenTypes.add(new Token(67, "STRING", ""));
+
+
 
         ArrayList<Token> LexedTokens = new ArrayList<>();
         String filePath = "/Users/xmastersteel/IdeaProjects/Lexer/src/test.txt";
@@ -138,9 +141,46 @@ public class Main {
                         LexedTokens.add(token);
                     }
 
-                    temp = "";
                     continue;
                 }
+
+                // EDGE CASE: String
+                // Implement: if char is a double quote, create a new lookahead reader. if the lookahead never finds
+                // another double quote, disregard, (it'll be handled by the next edge case). If it finds another double
+                // quote, track an integer about how many the actual reader has to go forwards. Parse as string token and contniue;
+                // Ensure readPosition is updated.
+
+                if (character == '"'){
+                    BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
+                    tempReader.skip(readerPosition);
+                    boolean doubleQuoteExists = false;
+                    int lookAhead = 0;
+                    while(true){
+                        int tempAscii = tempReader.read();
+                        char tempCharacter = (char) tempAscii;
+                        if (tempAscii == - 1) break;
+                        if (tempCharacter == '"') {
+                            doubleQuoteExists = true;
+                            break;
+                        };
+                        lookAhead++;
+                    }
+
+                    if (doubleQuoteExists){
+                        for (int i = 0; i < lookAhead + 1; i++) {
+                            ascii = reader.read();
+                            readerPosition++;
+                            character = (char) ascii;
+                            temp = temp + character;
+                        }
+                        temp = '"' + temp;
+                        LexedTokens.add(new Token(67, "STRING", temp));
+                        temp = "";
+                        continue;
+                    }
+
+                }
+
 
                 // EDGE CASES: Single-char operators.
                 if (character == ':') {
@@ -230,10 +270,20 @@ public class Main {
                                 int tempAscii = reader.read();
                                 temp = temp + (char)tempAscii;
                                 readerPosition++;
-                                LexedTokens.add(new Token(63, "NOTEQUALS_operator", temp));
+                                LexedTokens.add(new Token(46, "NOTEQUALS_operator", temp));
                                 temp = "";
+                                Candidates.clear();
+                                Candidates.addAll(TokenTypes);
                                 break;
                             }
+                            else{
+                                LexedTokens.add(new Token(45, "NOTEQUALS_operator", temp));
+                                temp = "";
+                                Candidates.clear();
+                                Candidates.addAll(TokenTypes);
+                            }
+
+
                         }
                         else{
                             // Create new token, and add it to found tokens.
