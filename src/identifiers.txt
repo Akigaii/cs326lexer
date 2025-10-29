@@ -1,0 +1,17 @@
+/*
+  This test program is meant to test identifiers. Particularly, looks
+  to see how they tokenize based on interactions with operators,
+  and how they interact with ID names with keywords inside them, i.e.
+  keyword "alert" is inside identifier "alertness."
+*/
+
+___*__*_
+Identifier
+x
+message
+alertness
+message+alert>memememememememe
+alert[alertness]
+"!d3nt!fiER~~~~"
+identifer_
+_identifier

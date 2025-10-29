@@ -125,7 +125,7 @@ public class Main {
         }
 
         ArrayList<Token> LexedTokens = new ArrayList<>();
-        String filePath = "/Users/xmastersteel/IdeaProjects/Lexer/src/returns_not=.txt";
+        String filePath = "/Users/xmastersteel/IdeaProjects/Lexer/src/identifiers.txt";
 
         try {
             int readerPosition = 0; // Tracks which character the reader is on in the input file.
@@ -436,7 +436,7 @@ public class Main {
                                 break;
                             }
                             else{ // It's an identifier
-                                System.out.println("Lookahead saw nothing, so its an identifeir");
+                                System.out.println("Lookahead saw nothing, so its an identifier");
                                 BufferedReader tempReader2 = new BufferedReader(new FileReader(filePath));
                                 tempReader2.skip(readerPosition); // Lookahead.
                                 int lookAhead = 0;
@@ -564,7 +564,7 @@ public class Main {
                             int tempAscii = tempReader.read();
 //                            System.out.println("tempAscii: " + tempAscii);
 //                            if (tempAscii == 32 || tempAscii == 10) {break;}
-                            if (!((tempAscii >= 65 && tempAscii <= 90) || (tempAscii >= 97 && tempAscii <= 122) || (tempAscii >= 48 && tempAscii <= 57)))
+                            if (!((tempAscii >= 65 && tempAscii <= 90) || (tempAscii >= 97 && tempAscii <= 122) || (tempAscii >= 48 && tempAscii <= 57) || tempAscii == 95))
                                 break;
                             lookAhead++;
                         }
@@ -612,16 +612,16 @@ public class Main {
                 LexedTokens.get(i).printToken();
             }
 
-            String fileName = "TEST_return_not=output.txt";
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-                for (int i = 0; i < LexedTokens.size(); i++) {
-                    writer.write(LexedTokens.get(i).getToken());
-                    writer.newLine();
-                }
-                System.out.println("Content successfully written to " + fileName);
-            } catch (IOException e) {
-                System.err.println("An error occurred while writing to the file: " + e.getMessage());
-            }
+//            String fileName = "TEST_return_not=output.txt";
+//            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+//                for (int i = 0; i < LexedTokens.size(); i++) {
+//                    writer.write(LexedTokens.get(i).getToken());
+//                    writer.newLine();
+//                }
+//                System.out.println("Content successfully written to " + fileName);
+//            } catch (IOException e) {
+//                System.err.println("An error occurred while writing to the file: " + e.getMessage());
+//            }
 
 
 
