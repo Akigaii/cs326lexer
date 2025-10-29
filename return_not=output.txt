@@ -1,0 +1,70 @@
+Token Category: 68, Category Name: COMMENT, Value: /*
+  This test program is meant to test the edge cases with keywords "returns" and "not=".
+  This is because these are keywords that have other keywords as substrings, i.e. "return"
+  and "not" respectively.
+*/
+Token Category: 68, Category Name: COMMENT, Value: // "return" & "returns" test cases:
+Token Category: 28, Category Name: RETURN_Keyword, Value: return
+Token Category: 27, Category Name: RETURNS_Keyword, Value: returns
+Token Category: 28, Category Name: RETURN_Keyword, Value: return
+Token Category: 27, Category Name: RETURNS_Keyword, Value: returns
+Token Category: 28, Category Name: RETURN_Keyword, Value: return
+Token Category: 66, Category Name: Identifier, Value: returnS
+Token Category: 28, Category Name: RETURN_Keyword, Value: return
+Token Category: 66, Category Name: Identifier, Value: testIdentifier
+Token Category: 27, Category Name: RETURNS_Keyword, Value: returns
+Token Category: 53, Category Name: PLUS_operator, Value: +
+Token Category: 28, Category Name: RETURN_Keyword, Value: return
+Token Category: 59, Category Name: LEFT_PAREN_operator, Value: (
+Token Category: 66, Category Name: Identifier, Value: returnIndentifier1
+Token Category: 51, Category Name: GREATER_operator, Value: >
+Token Category: 66, Category Name: Identifier, Value: returnIdentifier2
+Token Category: 60, Category Name: RIGHT_PAREN_operator, Value: )
+Token Category: 28, Category Name: RETURN_Keyword, Value: return
+Token Category: 65, Category Name: DECIMAL, Value: 109.2
+Token Category: 56, Category Name: DIVIDE_operator, Value: /
+Token Category: 59, Category Name: LEFT_PAREN_operator, Value: (
+Token Category: 65, Category Name: DECIMAL, Value: 3902.7
+Token Category: 53, Category Name: PLUS_operator, Value: +
+Token Category: 64, Category Name: INTEGER, Value: 3
+Token Category: 60, Category Name: RIGHT_PAREN_operator, Value: )
+ERROR: ; is not a token.
+Token Category: 27, Category Name: RETURNS_Keyword, Value: returns
+Token Category: 67, Category Name: STRING, Value: "not@not=.com"
+ERROR: ; is not a token.
+Token Category: 68, Category Name: COMMENT, Value: // "not" & "not=" test cases:
+Token Category: 45, Category Name: NOT_operator, Value: not
+Token Category: 66, Category Name: Identifier, Value: nOt
+Token Category: 46, Category Name: NOTEQUALS_operator, Value: not=
+Token Category: 66, Category Name: Identifier, Value: noT
+Token Category: 50, Category Name: EQUALITY_operator, Value: =
+Token Category: 46, Category Name: NOTEQUALS_operator, Value: not=
+Token Category: 46, Category Name: NOTEQUALS_operator, Value: Not=
+Token Category: 45, Category Name: NOT_operator, Value: not
+Token Category: 46, Category Name: NOTEQUALS_operator, Value: not=
+Token Category: 59, Category Name: LEFT_PAREN_operator, Value: (
+Token Category: 46, Category Name: NOTEQUALS_operator, Value: not=
+Token Category: 66, Category Name: Identifier, Value: nott
+Token Category: 50, Category Name: EQUALITY_operator, Value: =
+Token Category: 45, Category Name: NOT_operator, Value: not
+Token Category: 60, Category Name: RIGHT_PAREN_operator, Value: )
+Token Category: 51, Category Name: GREATER_operator, Value: >
+Token Category: 66, Category Name: Identifier, Value: notNOT
+Token Category: 59, Category Name: LEFT_PAREN_operator, Value: (
+Token Category: 46, Category Name: NOTEQUALS_operator, Value: not=
+Token Category: 60, Category Name: RIGHT_PAREN_operator, Value: )
+Token Category: 67, Category Name: STRING, Value: "notNOT"
+Token Category: 45, Category Name: NOT_operator, Value: not
+Token Category: 59, Category Name: LEFT_PAREN_operator, Value: (
+Token Category: 60, Category Name: RIGHT_PAREN_operator, Value: )
+Token Category: 52, Category Name: LESS_operator, Value: <
+Token Category: 52, Category Name: LESS_operator, Value: <
+Token Category: 45, Category Name: NOT_operator, Value: not
+Token Category: 53, Category Name: PLUS_operator, Value: +
+Token Category: 64, Category Name: INTEGER, Value: 902
+Token Category: 50, Category Name: EQUALITY_operator, Value: =
+Token Category: 57, Category Name: LEFT_SQR_BRACE_operator, Value: [
+Token Category: 64, Category Name: INTEGER, Value: 90
+Token Category: 51, Category Name: GREATER_operator, Value: >
+Token Category: 65, Category Name: DECIMAL, Value: 89.2
+Token Category: 58, Category Name: RIGHT_SQR_BRACE_operator, Value: ]

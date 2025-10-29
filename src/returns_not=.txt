@@ -1,0 +1,25 @@
+/*
+  This test program is meant to test the edge cases with keywords "returns" and "not=".
+  This is because these are keywords that have other keywords as substrings, i.e. "return"
+  and "not" respectively.
+*/
+
+// "return" & "returns" test cases:
+    return
+    returns
+    return returns return
+    returnS
+    return testIdentifier
+    returns+return(returnIndentifier1 > returnIdentifier2)
+    return 109.2 / (3902.7 + 3);
+    returns "not@not=.com";
+
+// "not" & "not=" test cases:
+    not
+    nOt
+    not=
+    noT=
+    not=Not=not
+    not=(not=nott=not)>notNOT(not=)
+    "notNOT"not()<<
+    not+ 902 = [90 > 89.2]

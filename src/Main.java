@@ -2,6 +2,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.io.IOException;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 class Token {
     int category;
@@ -28,6 +31,13 @@ class Token {
         else
             System.out.println("Token Category: " + category + ", Category Name: " + categoryName + ", Value: " + value);
     }
+
+    public String getToken() {
+        if (error) return "ERROR: " + this.value + " is not a token.";
+        else
+            return "Token Category: " + category + ", Category Name: " + categoryName + ", Value: " + value;
+    }
+
 }
 
 
@@ -115,7 +125,7 @@ public class Main {
         }
 
         ArrayList<Token> LexedTokens = new ArrayList<>();
-        String filePath = "/Users/xmastersteel/IdeaProjects/Lexer/src/test.txt";
+        String filePath = "/Users/xmastersteel/IdeaProjects/Lexer/src/returns_not=.txt";
 
         try {
             int readerPosition = 0; // Tracks which character the reader is on in the input file.
@@ -130,14 +140,24 @@ public class Main {
                 readerPosition++;
 
                 // EDGE CASE: If ASCII is an EOF, stop reading input file.
-                if (ascii == -1) break;
-
-                // EDGE CASE: If ASCII is a ' ' or a '\n', disregard.
-                if (character == ' ' || character == '\n') {
-//
+                if (ascii == -1){
                     if (!temp.isEmpty()) {
                         Token token = new Token(66, "Identifier", temp);
                         LexedTokens.add(token);
+                    }
+                    break;
+                }
+
+
+                // EDGE CASE: If ASCII is a ' ' or a '\n', disregard.
+                if (character == ' ' || character == '\n') {
+
+                    System.out.println("space or newline ecnountered w/ temp = " + temp);
+                    if (!temp.isEmpty()) {
+                        Token token = new Token(66, "Identifier", temp);
+                        LexedTokens.add(token);
+                        Candidates.clear();
+                        Candidates.addAll(TokenTypes);
                     }
 
                     temp = "";
@@ -393,18 +413,49 @@ public class Main {
                             System.out.println("TRIGGERED " + Candidates.get(i).value);
                             BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
                             tempReader.skip(readerPosition); // Lookahead.
-                            if (tempReader.read() == '=') {
-                                int tempAscii = reader.read();
-                                temp = temp + (char) tempAscii;
+                            int tempAscii = tempReader.read();
+                            char tempCharacter = (char) tempAscii;
+                            if (tempCharacter == '=') {
+                                System.out.println("Lookahead saw '='");
+                                int x = reader.read();
+                                temp = temp + (char) x;
                                 readerPosition++;
+                                System.out.println("Making a NOTEQUALS token");
                                 LexedTokens.add(new Token(46, "NOTEQUALS_operator", temp));
                                 temp = "";
                                 Candidates.clear();
                                 Candidates.addAll(TokenTypes);
                                 break;
-                            } else {
+                            } else if (!Character.isLetterOrDigit(tempCharacter)){
+                                System.out.println("Lookahead saw '!Character.isLetterOrDigit(tempCharacter)'");
                                 LexedTokens.add(new Token(45, "NOT_operator", temp));
+                                System.out.println("Making a NOT token");
                                 temp = "";
+                                Candidates.clear();
+                                Candidates.addAll(TokenTypes);
+                                break;
+                            }
+                            else{ // It's an identifier
+                                System.out.println("Lookahead saw nothing, so its an identifeir");
+                                BufferedReader tempReader2 = new BufferedReader(new FileReader(filePath));
+                                tempReader2.skip(readerPosition); // Lookahead.
+                                int lookAhead = 0;
+                                while (true){
+                                    int tempAscii2 = tempReader2.read();
+                                    char tempCharacter2 = (char) tempAscii2;
+                                    if (!Character.isLetterOrDigit(tempCharacter2)) break;
+                                    lookAhead++;
+                                }
+                                for (int j = 0; i < lookAhead + 1; i++){
+                                    int x = reader.read();
+                                    char y =  (char) x;
+                                    temp = temp + y;
+                                    readerPosition++;
+                                }
+                                System.out.println("Making a identifier token");
+                                Token token = new Token(66, "Identifier", temp);
+                                temp = "";
+                                LexedTokens.add(token);
                                 Candidates.clear();
                                 Candidates.addAll(TokenTypes);
                                 break;
@@ -429,7 +480,6 @@ public class Main {
                         } else {
                             Candidates.clear();
                             Candidates.addAll(TokenTypes);
-
                             break;
                         }
 
@@ -519,7 +569,6 @@ public class Main {
                             lookAhead++;
                         }
 
-
                         for (int i = 0; i < lookAhead; i++) {
                             int tempAscii = reader.read();
                             char tempCharacter = (char) tempAscii;
@@ -532,7 +581,7 @@ public class Main {
                             Token token = new Token(27, "RETURNS_keyword", temp);
                             LexedTokens.add(token);
                         } else if (temp.equals("not=")) {
-                            Token token = new Token(66, "Identifier", temp);
+                            Token token = new Token(46, "NOTEQUALS_keyword", temp);
                             LexedTokens.add(token);
                         } else {
                             System.out.println("Created Identifier token");
@@ -563,13 +612,27 @@ public class Main {
                 LexedTokens.get(i).printToken();
             }
 
+            String fileName = "TEST_return_not=output.txt";
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+                for (int i = 0; i < LexedTokens.size(); i++) {
+                    writer.write(LexedTokens.get(i).getToken());
+                    writer.newLine();
+                }
+                System.out.println("Content successfully written to " + fileName);
+            } catch (IOException e) {
+                System.err.println("An error occurred while writing to the file: " + e.getMessage());
+            }
+
+
+
+
 
         } catch (FileNotFoundException e) {
             System.out.println("ERROR: File not found.");
         } catch (Exception e) {
             System.out.println("ERROR: Something went wrong.");
-
         }
+
 
 
     }
