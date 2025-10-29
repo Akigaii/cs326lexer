@@ -1,0 +1,36 @@
+/*
+    As this assignment is based off Professor Stefik's Quorum language, I decided to create a
+    sample program in Quorum to see how my lexer would tokenize it. To create my test
+    program, I utilized the Quorum browser-IDE found at: https://quorumlanguage.com/learn.html.
+*/
+
+action Main
+   output "Hello World"
+
+   integer a = 6
+   integer b = 7
+   number c = 6.7
+   number sum = a + c
+   integer modulus = a mod b
+   say "The sum of a and c is:" + sum
+   say "The remainder of a and b is:" + modulus
+
+   boolean matchaTasteLikeGrass = true
+
+   repeat 5 times
+        output "for(int i = 0; i < 5; i++)"
+   end
+
+   if (true)
+       say "double hamburger, animal style, no pickles, add whole grilled onions"
+   end
+
+   return 0
+end
+
+class ReeceGalgana
+   boolean handsome = true
+   boolean funny = true
+   boolean smart = true
+end
+

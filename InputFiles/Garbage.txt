@@ -1,0 +1,20 @@
+/*
+     This input file is meant to analyze how the lexer tokenizes incomprehensible
+     random sequences of letters, numbers, and symbols. (I randomly hit the keyboard).
+                                                                                        */
+
+b gehjkw noi 3ji
+w4t[g 4w
+t] w
+4t-]30or0q-] r=-3to
+
+  ]- FI-3W0
+  4TW0]
+  - 4TQO0R3I"POR#K)_
+  3R0R[
+
+#)IR_}#"PF
+FPELKPSJIOES
+<E:>FO
+
+_ _

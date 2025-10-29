@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -27,13 +28,13 @@ class Token {
     }
 
     public void printToken() {
-        if (error) System.out.println("ERROR: " + this.value + " is not a token.");
+        if (error) System.out.println("ERROR: " + this.value + " is invalid.");
         else
             System.out.println("Token Category: " + category + ", Category Name: " + categoryName + ", Value: " + value);
     }
 
     public String getToken() {
-        if (error) return "ERROR: " + this.value + " is not a token.";
+        if (error) return "ERROR: " + this.value + " is invalid.";
         else
             return "Token Category: " + category + ", Category Name: " + categoryName + ", Value: " + value;
     }
@@ -43,8 +44,17 @@ class Token {
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception{
+        String directoryPath = "/Users/xmastersteel/IdeaProjects/Lexer/InputFiles";
+        File dir = new File(directoryPath);
+        File[] directoryListing = dir.listFiles();
+        for (File child : directoryListing) {
+            System.out.println("\n =====   ALL TOKENS FOR " + "\"" + child.getName() + "\""+  "   =====");
+            lexer(directoryPath + '/' + child.getName());
+        }
+    }
 
+    public static void lexer(String filePath){
         ArrayList<Token> TokenTypes = new ArrayList<>();
         if (true) {
             TokenTypes.add(new Token(1, "OUTPUT_Keyword", "output"));
@@ -125,7 +135,7 @@ public class Main {
         }
 
         ArrayList<Token> LexedTokens = new ArrayList<>();
-        String filePath = "/Users/xmastersteel/IdeaProjects/Lexer/src/identifiers.txt";
+//        String filePath = "/Users/xmastersteel/IdeaProjects/Lexer/src/Garbage.txt";
 
         try {
             int readerPosition = 0; // Tracks which character the reader is on in the input file.
@@ -152,7 +162,7 @@ public class Main {
                 // EDGE CASE: If ASCII is a ' ' or a '\n', disregard.
                 if (character == ' ' || character == '\n') {
 
-                    System.out.println("space or newline ecnountered w/ temp = " + temp);
+//                    System.out.println("space or newline ecnountered w/ temp = " + temp);
                     if (!temp.isEmpty()) {
                         Token token = new Token(66, "Identifier", temp);
                         LexedTokens.add(token);
@@ -199,7 +209,7 @@ public class Main {
 
                 // EDGE CASE: Single line comments
                 if (character == '/') {
-                    System.out.println("/ IS HIT!!!!: " + " [" + character + " ]");
+//                    System.out.println("/ IS HIT!!!!: " + " [" + character + " ]");
                     boolean isComment = false;
                     BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
                     tempReader.skip(readerPosition);
@@ -229,12 +239,13 @@ public class Main {
 
                 // EDGE CASE: Multi line comments
                 if (character == '/') {
-                    System.out.println("/ IS HIT!!!!: " + " [" + character + " ]");
                     boolean isComment = false;
                     BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
                     tempReader.skip(readerPosition);
+                    int tempAscii3 = tempReader.read();
+                    char tempCharacter3 = (char) tempAscii3;
                     int lookAhead = 0;
-                    if (tempReader.read() == '*') {
+                    if (tempCharacter3 == '*') {
                         String potentialComment = "";
                         BufferedReader slow = new BufferedReader(new FileReader(filePath));
                         slow.skip(readerPosition);
@@ -244,13 +255,14 @@ public class Main {
                             int tempAscii = tempReader.read();
                             char tempCharacter = (char) tempAscii;
                             if (tempAscii == -1) break;
-                            if (tempCharacter == '/' && slowCharacter == '*') {
-                                System.out.println("isComment = true");
+                            if (slowCharacter == '*' && tempCharacter == '/' && lookAhead != 0) {
+//                                System.out.println("isComment = true");
+//                                System.out.println("slowCharacter = " + slowCharacter + " tempCharacter = " + tempCharacter + " tempCharacter3 = " + tempCharacter3 + " character = " + character );
                                 isComment = true;
                                 break;
                             }
                             potentialComment = potentialComment + tempCharacter;
-                            System.out.println("potentialComment: " + potentialComment);
+//                            System.out.println("potentialComment: " + potentialComment);
                             lookAhead++;
                         }
                     }
@@ -396,7 +408,6 @@ public class Main {
                 }
 
                 temp = temp + character;
-                System.out.println("-  Temp: " + temp);
                 boolean match = false;
 
                 // EDGE CASE: Keywords
@@ -406,37 +417,29 @@ public class Main {
                     if (temp.equals(Candidates.get(i).value)) { // Exact match!
 //
                         match = true;
-                        System.out.println("Candidate found: " + Candidates.get(i).value);
-                        System.out.println("Temp: " + temp);
 
                         if (temp.equals("not") || temp.equals("Not")) {
-                            System.out.println("TRIGGERED " + Candidates.get(i).value);
                             BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
                             tempReader.skip(readerPosition); // Lookahead.
                             int tempAscii = tempReader.read();
                             char tempCharacter = (char) tempAscii;
                             if (tempCharacter == '=') {
-                                System.out.println("Lookahead saw '='");
                                 int x = reader.read();
                                 temp = temp + (char) x;
                                 readerPosition++;
-                                System.out.println("Making a NOTEQUALS token");
                                 LexedTokens.add(new Token(46, "NOTEQUALS_operator", temp));
                                 temp = "";
                                 Candidates.clear();
                                 Candidates.addAll(TokenTypes);
                                 break;
                             } else if (!Character.isLetterOrDigit(tempCharacter)){
-                                System.out.println("Lookahead saw '!Character.isLetterOrDigit(tempCharacter)'");
                                 LexedTokens.add(new Token(45, "NOT_operator", temp));
-                                System.out.println("Making a NOT token");
                                 temp = "";
                                 Candidates.clear();
                                 Candidates.addAll(TokenTypes);
                                 break;
                             }
                             else{ // It's an identifier
-                                System.out.println("Lookahead saw nothing, so its an identifier");
                                 BufferedReader tempReader2 = new BufferedReader(new FileReader(filePath));
                                 tempReader2.skip(readerPosition); // Lookahead.
                                 int lookAhead = 0;
@@ -452,7 +455,6 @@ public class Main {
                                     temp = temp + y;
                                     readerPosition++;
                                 }
-                                System.out.println("Making a identifier token");
                                 Token token = new Token(66, "Identifier", temp);
                                 temp = "";
                                 LexedTokens.add(token);
@@ -467,7 +469,6 @@ public class Main {
                         tempReader2.skip(readerPosition);
                         int tempAscii2 = tempReader2.read();
                         char tempCharacter2 = (char) tempAscii2;
-                        System.out.println("tempCharacter2" + tempCharacter2);
 
                         // If this is triggered, it is not a keyword anymore, it's an identifier.
                         if (!Character.isLetterOrDigit(tempCharacter2)) {
@@ -495,11 +496,9 @@ public class Main {
 
                 // EDGE CASE: Identifiers, Integers, Decimals, or Errors
                 if (Candidates.isEmpty()) {
-                    System.out.println("NO CANDIDATES FOUND!");
 
                     // If beginning ASCII is 0-9, it must be an integer.
                     if (temp.charAt(0) >= 48 && temp.charAt(0) <= 57) {
-                        System.out.println("Must be an integer");
 
                         // Now, keep reading for all integers until you reach a non-integer.
                         BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
@@ -515,7 +514,6 @@ public class Main {
                                 isDecimal = true;
                             } else if (tempAscii == 46 && isDecimal) {
                                 // If a '.' is read in for the SECOND TIME, it's invalid.
-                                System.out.println("Period appeared twice");
                                 break;
                             } else if (!(tempAscii >= 48 && tempAscii <= 57)) break;
                             lookAhead++;
@@ -538,10 +536,8 @@ public class Main {
                                 char tempCharacter = (char) tempAscii;
                                 readerPosition++;
                                 temp = temp + tempCharacter;
-//                                System.out.println("Temp: " + temp);
                             }
 
-                            System.out.println("Created DECIMAL token");
                             Token token = new Token(65, "DECIMAL", temp);
                             LexedTokens.add(token);
 
@@ -552,7 +548,6 @@ public class Main {
 
                     // If beginning ASCII is A-Z or a-z, it must be an identifier.
                     else if ((temp.charAt(0) >= 65 && temp.charAt(0) <= 90) || (temp.charAt(0) >= 97 && temp.charAt(0) <= 122)) {
-                        System.out.println("Must be an identifier");
 
                         // Now, scan the last character to see if its a valid symbol.
                         BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
@@ -574,7 +569,6 @@ public class Main {
                             char tempCharacter = (char) tempAscii;
                             readerPosition++;
                             temp = temp + tempCharacter;
-                            System.out.println("-   Temp: " + temp);
                         }
 
                         if (temp.equals("returns")) {
@@ -584,7 +578,6 @@ public class Main {
                             Token token = new Token(46, "NOTEQUALS_keyword", temp);
                             LexedTokens.add(token);
                         } else {
-                            System.out.println("Created Identifier token");
                             Token token = new Token(66, "Identifier", temp);
                             LexedTokens.add(token);
                         }
@@ -592,14 +585,13 @@ public class Main {
                     }
                     // If no matches above, the token must be an error.
                     else {
-                        System.out.println("Created ERROR token");
                         Token token = new Token(temp, true);
                         LexedTokens.add(token);
                     }
 
                     // Reset candidates and temp String.
                     Candidates.clear();
-                    System.out.println("Refreshing the candidates.");
+//                    System.out.println("Refreshing the candidates.");
                     Candidates.addAll(TokenTypes);
                     temp = "";
                 }
@@ -607,7 +599,6 @@ public class Main {
             }
 
 
-            System.out.println("\n =====   ALL TOKENS   ===== ");
             for (int i = 0; i < LexedTokens.size(); i++) {
                 LexedTokens.get(i).printToken();
             }

@@ -1,0 +1,13 @@
+/*
+     This input file is meant to test lexer functionality for integers and decimals.
+                                                                                        */
+1
+12.2
+32.
+453 354
+0001.1101.1010.0010
+1one
+one1
+1.one.
+123"456"789
+1234.5 //6789

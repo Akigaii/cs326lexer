@@ -1,0 +1,37 @@
+/*
+      This input file is meant to test lexer functionality for single-line/multi-line comments.
+                                                                                                    */
+
+// this is a comment
+
+this is not a comment //
+
+// Jiuf3iu3$$#$#()rh3j0+F[]earf\fmkla
+
+// 海の向こうから、柔らかい風が吹いてきた。
+
+// this comment gets
+cut off
+
+/// this is a comment
+
+///////////// this is a comment too
+
+/* this is a multi-line comment */
+
+/* this is also a
+   multi-line
+   comment      */
+
+/* multi-line comment */// single-line comment
+
+/*/*
+   nested multi
+   multi-line
+   comment  */*/
+
+/*/
+
+
+
+
