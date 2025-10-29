@@ -35,81 +35,84 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         ArrayList<Token> TokenTypes = new ArrayList<>();
-        TokenTypes.add(new Token(1, "OUTPUT_Keyword", "output"));
-        TokenTypes.add(new Token(2, "ON_Keyword", "on"));
-        TokenTypes.add(new Token(3, "CREATE_Keyword", "create"));
-        TokenTypes.add(new Token(4, "CONSTANT_Keyword", "constant"));
-        TokenTypes.add(new Token(5, "ELSEIF_Keyword", "elseif"));
-        TokenTypes.add(new Token(6, "ME_Keyword", "me"));
-        TokenTypes.add(new Token(7, "UNTIL_Keyword", "until"));
-        TokenTypes.add(new Token(8, "PUBLIC_Keyword", "public"));
-        TokenTypes.add(new Token(9, "PRIVATE_Keyword", "private"));
-        TokenTypes.add(new Token(10, "ALERT_Keyword", "alert"));
-        TokenTypes.add(new Token(11, "DETECT_Keyword", "detect"));
-        TokenTypes.add(new Token(12, "ALWAYS_Keyword", "always"));
-        TokenTypes.add(new Token(13, "CHECK_Keyword", "check"));
-        TokenTypes.add(new Token(14, "PARENT_Keyword", "parent"));
-        TokenTypes.add(new Token(15, "BLUEPRINT_Keyword", "blueprint"));
-        TokenTypes.add(new Token(16, "SYSTEM_Keyword", "system"));
-        TokenTypes.add(new Token(17, "INHERITS_Keyword", "is"));
-        TokenTypes.add(new Token(18, "CAST_Keyword", "cast"));
-        TokenTypes.add(new Token(19, "INPUT_Keyword", "input"));
-        TokenTypes.add(new Token(20, "SAY_Keyword", "say"));
-        TokenTypes.add(new Token(21, "NOW_Keyword", "now"));
-        TokenTypes.add(new Token(22, "WHILE_Keyword", "while"));
-        TokenTypes.add(new Token(23, "PACKAGE_Keyword", "package"));
-        TokenTypes.add(new Token(24, "TIMES_Keyword", "times"));
-        TokenTypes.add(new Token(25, "REPEAT_Keyword", "repeat"));
-        TokenTypes.add(new Token(26, "ELSE_Keyword", "else"));
-        TokenTypes.add(new Token(27, "RETURNS_Keyword", "returns"));
-        TokenTypes.add(new Token(28, "RETURN_Keyword", "return"));
-        TokenTypes.add(new Token(29, "AND_Keyword", "and"));
-        TokenTypes.add(new Token(30, "OR_Keyword", "or"));
-        TokenTypes.add(new Token(31, "UNDEFINED_Keyword", "undefined"));
-        TokenTypes.add(new Token(32, "SHARED_Keyword", "shared"));
-        TokenTypes.add(new Token(33, "ACTION_Keyword", "action"));
-        TokenTypes.add(new Token(34, "INTEGER_Keyword", "integer"));
-        TokenTypes.add(new Token(35, "NUMBER_Keyword", "number"));
-        TokenTypes.add(new Token(36, "TEXT_Keyword", "text"));
-        TokenTypes.add(new Token(37, "BOOLEAN_Keyword", "boolean"));
-        TokenTypes.add(new Token(38, "USE_Keyword", "use"));
-        TokenTypes.add(new Token(39, "MODULO_Keyword", "mod"));
-        TokenTypes.add(new Token(40, "IF_Keyword", "if"));
-        TokenTypes.add(new Token(41, "END_Keyword", "end"));
-        TokenTypes.add(new Token(42, "CLASS_Keyword", "class"));
-        TokenTypes.add(new Token(43, "TRUE_Keyword", "true"));
-        TokenTypes.add(new Token(44, "FALSE_Keyword", "false"));
 
-        TokenTypes.add(new Token(45, "NOT_Keyword", "not"));
-        TokenTypes.add(new Token(45, "NOT_Keyword", "Not"));
-        TokenTypes.add(new Token(46, "NOTEQUALS_Keyword", "not="));
-        TokenTypes.add(new Token(46, "NOTEQUALS_Keyword", "Not="));
+        if (true){
+            TokenTypes.add(new Token(1, "OUTPUT_Keyword", "output"));
+            TokenTypes.add(new Token(2, "ON_Keyword", "on"));
+            TokenTypes.add(new Token(3, "CREATE_Keyword", "create"));
+            TokenTypes.add(new Token(4, "CONSTANT_Keyword", "constant"));
+            TokenTypes.add(new Token(5, "ELSEIF_Keyword", "elseif"));
+            TokenTypes.add(new Token(6, "ME_Keyword", "me"));
+            TokenTypes.add(new Token(7, "UNTIL_Keyword", "until"));
+            TokenTypes.add(new Token(8, "PUBLIC_Keyword", "public"));
+            TokenTypes.add(new Token(9, "PRIVATE_Keyword", "private"));
+            TokenTypes.add(new Token(10, "ALERT_Keyword", "alert"));
+            TokenTypes.add(new Token(11, "DETECT_Keyword", "detect"));
+            TokenTypes.add(new Token(12, "ALWAYS_Keyword", "always"));
+            TokenTypes.add(new Token(13, "CHECK_Keyword", "check"));
+            TokenTypes.add(new Token(14, "PARENT_Keyword", "parent"));
+            TokenTypes.add(new Token(15, "BLUEPRINT_Keyword", "blueprint"));
+            TokenTypes.add(new Token(16, "SYSTEM_Keyword", "system"));
+            TokenTypes.add(new Token(17, "INHERITS_Keyword", "is"));
+            TokenTypes.add(new Token(18, "CAST_Keyword", "cast"));
+            TokenTypes.add(new Token(19, "INPUT_Keyword", "input"));
+            TokenTypes.add(new Token(20, "SAY_Keyword", "say"));
+            TokenTypes.add(new Token(21, "NOW_Keyword", "now"));
+            TokenTypes.add(new Token(22, "WHILE_Keyword", "while"));
+            TokenTypes.add(new Token(23, "PACKAGE_Keyword", "package"));
+            TokenTypes.add(new Token(24, "TIMES_Keyword", "times"));
+            TokenTypes.add(new Token(25, "REPEAT_Keyword", "repeat"));
+            TokenTypes.add(new Token(26, "ELSE_Keyword", "else"));
+            TokenTypes.add(new Token(27, "RETURNS_Keyword", "returns"));
+            TokenTypes.add(new Token(28, "RETURN_Keyword", "return"));
+            TokenTypes.add(new Token(29, "AND_Keyword", "and"));
+            TokenTypes.add(new Token(30, "OR_Keyword", "or"));
+            TokenTypes.add(new Token(31, "UNDEFINED_Keyword", "undefined"));
+            TokenTypes.add(new Token(32, "SHARED_Keyword", "shared"));
+            TokenTypes.add(new Token(33, "ACTION_Keyword", "action"));
+            TokenTypes.add(new Token(34, "INTEGER_Keyword", "integer"));
+            TokenTypes.add(new Token(35, "NUMBER_Keyword", "number"));
+            TokenTypes.add(new Token(36, "TEXT_Keyword", "text"));
+            TokenTypes.add(new Token(37, "BOOLEAN_Keyword", "boolean"));
+            TokenTypes.add(new Token(38, "USE_Keyword", "use"));
+            TokenTypes.add(new Token(39, "MODULO_Keyword", "mod"));
+            TokenTypes.add(new Token(40, "IF_Keyword", "if"));
+            TokenTypes.add(new Token(41, "END_Keyword", "end"));
+            TokenTypes.add(new Token(42, "CLASS_Keyword", "class"));
+            TokenTypes.add(new Token(43, "TRUE_Keyword", "true"));
+            TokenTypes.add(new Token(44, "FALSE_Keyword", "false"));
 
-        TokenTypes.add(new Token(47, "COLON_operator", ":"));
-        TokenTypes.add(new Token(48, "PERIOD_operator", "."));
-        TokenTypes.add(new Token(49, "COMMA_operator", ","));
-        TokenTypes.add(new Token(50, "EQUALITY_operator", "="));
-        TokenTypes.add(new Token(51, "GREATER_operator", ">"));
-        TokenTypes.add(new Token(52, "LESS_operator", "<"));
-        TokenTypes.add(new Token(53, "PLUS_operator", "+"));
-        TokenTypes.add(new Token(54, "MINUS_operator", "-"));
-        TokenTypes.add(new Token(55, "MULTIPLY_operator", "*"));
-        TokenTypes.add(new Token(56, "DIVIDE_operator", "/"));
-        TokenTypes.add(new Token(57, "LEFT_SQR_BRACE_operator", "["));
-        TokenTypes.add(new Token(58, "RIGHT_SQR_BRACE_operator", "]"));
-        TokenTypes.add(new Token(59, "LEFT_PAREN_operator", "("));
-        TokenTypes.add(new Token(60, "RIGHT_PAREN_operator", ")"));
-        TokenTypes.add(new Token(61, "DOUBLE_QUOTE_operator", "\""));
+            TokenTypes.add(new Token(45, "NOT_Keyword", "not"));
+            TokenTypes.add(new Token(45, "NOT_Keyword", "Not"));
+            TokenTypes.add(new Token(46, "NOTEQUALS_Keyword", "not="));
+            TokenTypes.add(new Token(46, "NOTEQUALS_Keyword", "Not="));
 
-        TokenTypes.add(new Token(62, "LESS_EQUAL_operator", "<="));
-        TokenTypes.add(new Token(63, "GREATER_EQUAL_operator", ">="));
+            TokenTypes.add(new Token(47, "COLON_operator", ":"));
+            TokenTypes.add(new Token(48, "PERIOD_operator", "."));
+            TokenTypes.add(new Token(49, "COMMA_operator", ","));
+            TokenTypes.add(new Token(50, "EQUALITY_operator", "="));
+            TokenTypes.add(new Token(51, "GREATER_operator", ">"));
+            TokenTypes.add(new Token(52, "LESS_operator", "<"));
+            TokenTypes.add(new Token(53, "PLUS_operator", "+"));
+            TokenTypes.add(new Token(54, "MINUS_operator", "-"));
+            TokenTypes.add(new Token(55, "MULTIPLY_operator", "*"));
+            TokenTypes.add(new Token(56, "DIVIDE_operator", "/"));
+            TokenTypes.add(new Token(57, "LEFT_SQR_BRACE_operator", "["));
+            TokenTypes.add(new Token(58, "RIGHT_SQR_BRACE_operator", "]"));
+            TokenTypes.add(new Token(59, "LEFT_PAREN_operator", "("));
+            TokenTypes.add(new Token(60, "RIGHT_PAREN_operator", ")"));
+            TokenTypes.add(new Token(61, "DOUBLE_QUOTE_operator", "\""));
 
-        TokenTypes.add(new Token(64, "INT", ""));
-        TokenTypes.add(new Token(65, "DECIMAL", ""));
-        TokenTypes.add(new Token(66, "IDENTIFIER", ""));
-        TokenTypes.add(new Token(67, "STRING", ""));
+            TokenTypes.add(new Token(62, "LESS_EQUAL_operator", "<="));
+            TokenTypes.add(new Token(63, "GREATER_EQUAL_operator", ">="));
 
+            TokenTypes.add(new Token(64, "INT", ""));
+            TokenTypes.add(new Token(65, "DECIMAL", ""));
+            TokenTypes.add(new Token(66, "IDENTIFIER", ""));
+            TokenTypes.add(new Token(67, "STRING", ""));
+            TokenTypes.add(new Token(68, "COMMENT", ""));
 
+        }
 
         ArrayList<Token> LexedTokens = new ArrayList<>();
         String filePath = "/Users/xmastersteel/IdeaProjects/Lexer/src/test.txt";
@@ -132,24 +135,20 @@ public class Main {
                 // EDGE CASE: If ASCII is a ' ' or a '\n', disregard.
                 if (character == ' ' || character == '\n') {
 //                    Candidates.clear(); // If a space is encountered, then it cannot be a keyword.
-                    System.out.println("Char: " +  " [" + character + " ]");
-                    System.out.println("Space encountered, clearing the candidates.");
-                    System.out.println("temp " + temp);
+//                    System.out.println("Char: " +  " [" + character + " ]");
+//                    System.out.println("Space encountered, clearing the candidates.");
+//                    System.out.println("temp " + temp);
 
                     if (!temp.isEmpty()) {
                         Token token = new Token(66, "Identifier", temp);
                         LexedTokens.add(token);
                     }
 
+                    temp = "";
                     continue;
                 }
 
-                // EDGE CASE: String
-                // Implement: if char is a double quote, create a new lookahead reader. if the lookahead never finds
-                // another double quote, disregard, (it'll be handled by the next edge case). If it finds another double
-                // quote, track an integer about how many the actual reader has to go forwards. Parse as string token and contniue;
-                // Ensure readPosition is updated.
-
+                // EDGE CASE: Strings
                 if (character == '"'){
                     BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
                     tempReader.skip(readerPosition);
@@ -178,7 +177,38 @@ public class Main {
                         temp = "";
                         continue;
                     }
+                }
 
+
+                // EDGE CASE: Single line comments
+                if (character == '/'){
+                    System.out.println("/ IS HIT!!!!: " +  " [" + character + " ]");
+                    boolean isComment = false;
+                    BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
+                    tempReader.skip(readerPosition);
+                    int lookAhead = 0;
+                    if (tempReader.read() == '/'){
+                        isComment = true;
+                        while(true){
+                            int tempAscii = tempReader.read();
+                            char tempCharacter = (char) tempAscii;
+                            if (tempAscii == - 1 || tempCharacter == '\n') break;
+                            lookAhead++;
+                        }
+                    }
+
+                    if (isComment){
+                        for (int i = 0; i < lookAhead + 1; i++) {
+                            ascii = reader.read();
+                            readerPosition++;
+                            character = (char) ascii;
+                            temp = temp + character;
+                        }
+                        temp = '/' + temp;
+                        LexedTokens.add(new Token(68, "COMMENT", temp));
+                        temp = "";
+                        continue;
+                    }
                 }
 
 
@@ -262,6 +292,21 @@ public class Main {
                         System.out.println("Candidate found: " + Candidates.get(i).value);
                         System.out.println("Temp: " + temp);
 
+                        // Lookahead one token to finally confirm its a keyword.
+                        // THIS IMPLEMENTATION BREAKS NOT=
+                        BufferedReader tempReader2 = new BufferedReader(new FileReader(filePath));
+                        tempReader2.skip(readerPosition);
+                        int tempAscii2 = tempReader2.read();
+                        char tempCharacter2 = (char) tempAscii2;
+                        System.out.println("tempCharacter2" + tempCharacter2);
+
+                        // If this is triggered, it is not a keyword anymore, it's an identifier.
+                        if ((tempCharacter2 != ' ') && (tempCharacter2 != '\n')){
+                            Candidates.clear();
+//                            Candidates.addAll(TokenTypes);
+                            break;
+                        }
+
                         if (temp.equals("not") || temp.equals("Not")){
                             System.out.println("TRIGGERED " + Candidates.get(i).value);
                             BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
@@ -277,7 +322,7 @@ public class Main {
                                 break;
                             }
                             else{
-                                LexedTokens.add(new Token(45, "NOTEQUALS_operator", temp));
+                                LexedTokens.add(new Token(45, "NOT_operator", temp));
                                 temp = "";
                                 Candidates.clear();
                                 Candidates.addAll(TokenTypes);
@@ -291,7 +336,6 @@ public class Main {
                             LexedTokens.add(token);
                             temp = "";
                         }
-
 
 
                         // Repopulate the Candidates ArrayList.
@@ -312,7 +356,6 @@ public class Main {
                 // EDGE CASE: Identifiers, Integers, Decimals, or Errors
                 if(Candidates.isEmpty()){
                     System.out.println("NO CANDIDATES FOUND!");
-
 
                     // If beginning ASCII is 0-9, it must be an integer.
                     if (temp.charAt(0) >= 48 && temp.charAt(0) <= 57) {
@@ -358,9 +401,10 @@ public class Main {
                                 char tempCharacter = (char) tempAscii;
                                 readerPosition++;
                                 temp = temp + tempCharacter;
-                                System.out.println("Temp: " + temp);
+//                                System.out.println("Temp: " + temp);
                             }
 
+                            System.out.println("Created DECIMAL token");
                             Token token = new Token(65, "DECIMAL", temp);
                             LexedTokens.add(token);
 
@@ -396,15 +440,17 @@ public class Main {
                             char tempCharacter = (char) tempAscii;
                             readerPosition++;
                             temp = temp + tempCharacter;
+                            System.out.println("-   Temp: " + temp);
                         }
+
+                        System.out.println("Created Identifier token");
 
                         Token token = new Token(66, "Identifier", temp);
                         LexedTokens.add(token);
                     }
                     // If no matches above, the token must be an error.
                     else{
-                        System.out.println("Must be an error");
-
+                        System.out.println("Created ERROR token");
                         Token token = new Token(temp, true);
                         LexedTokens.add(token);
                     }
