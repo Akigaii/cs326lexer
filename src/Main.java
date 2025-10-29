@@ -292,6 +292,28 @@ public class Main {
                         System.out.println("Candidate found: " + Candidates.get(i).value);
                         System.out.println("Temp: " + temp);
 
+                        if (temp.equals("not") || temp.equals("Not")) {
+                            System.out.println("TRIGGERED " + Candidates.get(i).value);
+                            BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
+                            tempReader.skip(readerPosition); // Lookahead.
+                            if (tempReader.read() == '=') {
+                                int tempAscii = reader.read();
+                                temp = temp + (char) tempAscii;
+                                readerPosition++;
+                                LexedTokens.add(new Token(46, "NOTEQUALS_operator", temp));
+                                temp = "";
+                                Candidates.clear();
+                                Candidates.addAll(TokenTypes);
+                                break;
+                            } else {
+                                LexedTokens.add(new Token(45, "NOT_operator", temp));
+                                temp = "";
+                                Candidates.clear();
+                                Candidates.addAll(TokenTypes);
+                                break;
+                            }
+                        }
+
                         // Lookahead one token to finally confirm its a keyword.
                         // THIS IMPLEMENTATION BREAKS NOT=
                         BufferedReader tempReader2 = new BufferedReader(new FileReader(filePath));
@@ -299,37 +321,67 @@ public class Main {
                         int tempAscii2 = tempReader2.read();
                         char tempCharacter2 = (char) tempAscii2;
                         System.out.println("tempCharacter2" + tempCharacter2);
-
                         // If this is triggered, it is not a keyword anymore, it's an identifier.
                         if ((tempCharacter2 != ' ') && (tempCharacter2 != '\n')){
                             Candidates.clear();
-//                            Candidates.addAll(TokenTypes);
                             break;
                         }
 
-                        if (temp.equals("not") || temp.equals("Not")){
-                            System.out.println("TRIGGERED " + Candidates.get(i).value);
-                            BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
-                            tempReader.skip(readerPosition); // Lookahead.
-                            if (tempReader.read() == '='){
-                                int tempAscii = reader.read();
-                                temp = temp + (char)tempAscii;
-                                readerPosition++;
-                                LexedTokens.add(new Token(46, "NOTEQUALS_operator", temp));
-                                temp = "";
-                                Candidates.clear();
-                                Candidates.addAll(TokenTypes);
-                                break;
-                            }
-                            else{
-                                LexedTokens.add(new Token(45, "NOT_operator", temp));
-                                temp = "";
-                                Candidates.clear();
-                                Candidates.addAll(TokenTypes);
-                            }
+//                        if (temp.equals("return")) {
+//                            System.out.println("TRIGGERED " + Candidates.get(i).value);
+//                            BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
+//                            tempReader.skip(readerPosition); // Lookahead.
+//                            if (tempReader.read() == 's') {
+//                                int tempAscii = reader.read();
+//                                temp = temp + (char) tempAscii;
+//                                readerPosition++;
+//
+//                                BufferedReader tempReader3 = new BufferedReader(new FileReader(filePath));
+//                                tempReader3.skip(readerPosition);
+//                                int tempAscii3 = tempReader3.read();
+//                                char tempCharacter3 = (char) tempAscii3;
+//                                System.out.println("tempCharacter3" + tempCharacter3);
+//                                // If this is triggered, it is not a keyword anymore, it's an identifier.
+//                                if ((tempCharacter3 != ' ') && (tempCharacter3 != '\n')){
+//                                    LexedTokens.add(new Token(45, "RETURN_operator", temp));
+//                                    Candidates.clear();
+//                                    break;
+//                                }
+//                                LexedTokens.add(new Token(46, "RETURNS_operator", temp));
+//                                temp = "";
+//                                Candidates.clear();
+//                                Candidates.addAll(TokenTypes);
+//                                break;
+//                            } else {
+//                                LexedTokens.add(new Token(45, "RETURN_operator", temp));
+//                                temp = "";
+//                                Candidates.clear();
+//                                Candidates.addAll(TokenTypes);
+//                            }
+//                        }
+//
+//                        if (temp.equals("not") || temp.equals("Not")) {
+//                            System.out.println("TRIGGERED " + Candidates.get(i).value);
+//                            BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
+//                            tempReader.skip(readerPosition); // Lookahead.
+//                            if (tempReader.read() == '=') {
+//                                int tempAscii = reader.read();
+//                                temp = temp + (char) tempAscii;
+//                                readerPosition++;
+//                                LexedTokens.add(new Token(46, "NOTEQUALS_operator", temp));
+//                                temp = "";
+//                                Candidates.clear();
+//                                Candidates.addAll(TokenTypes);
+//                                break;
+//                            } else {
+//                                LexedTokens.add(new Token(45, "NOT_operator", temp));
+//                                temp = "";
+//                                Candidates.clear();
+//                                Candidates.addAll(TokenTypes);
+//                            }
+//
+//                        }
 
-
-                        }
                         else{
                             // Create new token, and add it to found tokens.
                             Token token = new Token(Candidates.get(i).category, Candidates.get(i).categoryName, Candidates.get(i).value);
@@ -433,7 +485,6 @@ public class Main {
                             lookAhead++;
                         }
 
-//                        System.out.println("lookAhead: " + lookAhead);
 
                         for (int i = 0; i < lookAhead; i++) {
                             int tempAscii = reader.read();
@@ -443,10 +494,20 @@ public class Main {
                             System.out.println("-   Temp: " + temp);
                         }
 
-                        System.out.println("Created Identifier token");
+                        if (temp.equals("returns")){
+                            Token token = new Token(27, "RETURNS_keyword", temp);
+                            LexedTokens.add(token);
+                        }
+                        else if (temp.equals("not=")) {
+                            Token token = new Token(111116, "Identifier", temp);
+                            LexedTokens.add(token);
+                        }
+                       else {
+                           System.out.println("Created Identifier token");
+                            Token token = new Token(66, "Identifier", temp);
+                            LexedTokens.add(token);
+                        }
 
-                        Token token = new Token(66, "Identifier", temp);
-                        LexedTokens.add(token);
                     }
                     // If no matches above, the token must be an error.
                     else{
