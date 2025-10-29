@@ -3,20 +3,20 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 
-class Token{
+class Token {
     int category;
     String categoryName;
     String value;
     boolean error;
 
-    public Token(int category, String categoryName, String value){
+    public Token(int category, String categoryName, String value) {
         this.category = category;
         this.categoryName = categoryName;
         this.value = value;
         this.error = false;
     }
 
-    public Token(String value, boolean error){
+    public Token(String value, boolean error) {
         this.category = -1;
         this.categoryName = "ERROR";
         this.value = value;
@@ -25,18 +25,18 @@ class Token{
 
     public void printToken() {
         if (error) System.out.println("ERROR: " + this.value + " is not a token.");
-        else System.out.println("Token Category: " + category + ", Category Name: " + categoryName + ", Value: " + value);
+        else
+            System.out.println("Token Category: " + category + ", Category Name: " + categoryName + ", Value: " + value);
     }
 }
 
 
-
 public class Main {
+
     public static void main(String[] args) throws Exception {
 
         ArrayList<Token> TokenTypes = new ArrayList<>();
-
-        if (true){
+        if (true) {
             TokenTypes.add(new Token(1, "OUTPUT_Keyword", "output"));
             TokenTypes.add(new Token(2, "ON_Keyword", "on"));
             TokenTypes.add(new Token(3, "CREATE_Keyword", "create"));
@@ -117,13 +117,13 @@ public class Main {
         ArrayList<Token> LexedTokens = new ArrayList<>();
         String filePath = "/Users/xmastersteel/IdeaProjects/Lexer/src/test.txt";
 
-        try{
+        try {
             int readerPosition = 0; // Tracks which character the reader is on in the input file.
             String temp = "";       // Temporary string to contain char buffers.
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
             ArrayList<Token> Candidates = new ArrayList<>(TokenTypes);  // All possible matches.
 
-            while(true){ // Loop through every character in the input file.
+            while (true) { // Loop through every character in the input file.
                 // Read the character as an ASCII
                 int ascii = reader.read();
                 char character = (char) ascii;
@@ -145,23 +145,24 @@ public class Main {
                 }
 
                 // EDGE CASE: Strings
-                if (character == '"'){
+                if (character == '"') {
                     BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
                     tempReader.skip(readerPosition);
                     boolean doubleQuoteExists = false;
                     int lookAhead = 0;
-                    while(true){
+                    while (true) {
                         int tempAscii = tempReader.read();
                         char tempCharacter = (char) tempAscii;
-                        if (tempAscii == - 1) break;
+                        if (tempAscii == -1) break;
                         if (tempCharacter == '"') {
                             doubleQuoteExists = true;
                             break;
-                        };
+                        }
+                        ;
                         lookAhead++;
                     }
 
-                    if (doubleQuoteExists){
+                    if (doubleQuoteExists) {
                         for (int i = 0; i < lookAhead + 1; i++) {
                             ascii = reader.read();
                             readerPosition++;
@@ -177,22 +178,22 @@ public class Main {
 
 
                 // EDGE CASE: Single line comments
-                if (character == '/'){
-                    System.out.println("/ IS HIT!!!!: " +  " [" + character + " ]");
+                if (character == '/') {
+                    System.out.println("/ IS HIT!!!!: " + " [" + character + " ]");
                     boolean isComment = false;
                     BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
                     tempReader.skip(readerPosition);
                     int lookAhead = 0;
-                    if (tempReader.read() == '/'){
+                    if (tempReader.read() == '/') {
                         isComment = true;
-                        while(true){
+                        while (true) {
                             int tempAscii = tempReader.read();
                             char tempCharacter = (char) tempAscii;
-                            if (tempAscii == - 1 || tempCharacter == '\n') break;
+                            if (tempAscii == -1 || tempCharacter == '\n') break;
                             lookAhead++;
                         }
                     }
-                    if (isComment){
+                    if (isComment) {
                         for (int i = 0; i < lookAhead + 1; i++) {
                             ascii = reader.read();
                             readerPosition++;
@@ -208,7 +209,7 @@ public class Main {
 
                 // EDGE CASE: Multi line comments
                 if (character == '/') {
-                    System.out.println("/ IS HIT!!!!: " +  " [" + character + " ]");
+                    System.out.println("/ IS HIT!!!!: " + " [" + character + " ]");
                     boolean isComment = false;
                     BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
                     tempReader.skip(readerPosition);
@@ -233,7 +234,7 @@ public class Main {
                             lookAhead++;
                         }
                     }
-                    if (isComment){
+                    if (isComment) {
                         for (int i = 0; i < lookAhead + 2; i++) {
                             ascii = reader.read();
                             readerPosition++;
@@ -250,42 +251,42 @@ public class Main {
 
                 // EDGE CASES: Single-char operators.
                 if (character == ':') {
-                    if (!temp.isEmpty()){
-                        LexedTokens.add(new Token(53, "Identifier", temp));
+                    if (!temp.isEmpty()) {
+                        LexedTokens.add(new Token(66, "Identifier", temp));
                         temp = "";
                     }
                     LexedTokens.add(new Token(47, "COLON_operator", ":"));
                     continue;
                 } else if (character == '.') {
-                    if (!temp.isEmpty()){
-                        LexedTokens.add(new Token(53, "Identifier", temp));
+                    if (!temp.isEmpty()) {
+                        LexedTokens.add(new Token(66, "Identifier", temp));
                         temp = "";
                     }
                     LexedTokens.add(new Token(48, "PERIOD_operator", "."));
                     continue;
                 } else if (character == ',') {
-                    if (!temp.isEmpty()){
-                        LexedTokens.add(new Token(53, "Identifier", temp));
+                    if (!temp.isEmpty()) {
+                        LexedTokens.add(new Token(66, "Identifier", temp));
                         temp = "";
                     }
                     LexedTokens.add(new Token(49, "COMMA_operator", ","));
                     continue;
                 } else if (character == '=') {
-                    if (!temp.isEmpty()){
-                        LexedTokens.add(new Token(53, "Identifier", temp));
+                    if (!temp.isEmpty()) {
+                        LexedTokens.add(new Token(66, "Identifier", temp));
                         temp = "";
                     }
                     LexedTokens.add(new Token(50, "EQUALITY_operator", "="));
                     continue;
                 } else if (character == '>') {
-                    if (!temp.isEmpty()){
-                        LexedTokens.add(new Token(53, "Identifier", temp));
+                    if (!temp.isEmpty()) {
+                        LexedTokens.add(new Token(66, "Identifier", temp));
                         temp = "";
                     }
                     // EDGE CASE: Two-char operator
                     BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
                     tempReader.skip(readerPosition); // Lookahead.
-                    if (tempReader.read() == '='){
+                    if (tempReader.read() == '=') {
                         reader.read();
                         readerPosition++;
                         LexedTokens.add(new Token(63, "GREATER_EQUAL_operator", ">="));
@@ -294,14 +295,14 @@ public class Main {
                     LexedTokens.add(new Token(51, "GREATER_operator", ">"));
                     continue;
                 } else if (character == '<') {
-                    if (!temp.isEmpty()){
-                        LexedTokens.add(new Token(53, "Identifier", temp));
+                    if (!temp.isEmpty()) {
+                        LexedTokens.add(new Token(66, "Identifier", temp));
                         temp = "";
                     }
                     // EDGE CASE: Two-char operator
                     BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
                     tempReader.skip(readerPosition); // Lookahead.
-                    if (tempReader.read() == '='){
+                    if (tempReader.read() == '=') {
                         reader.read();
                         readerPosition++;
                         LexedTokens.add(new Token(62, "LESS_EQUAL_operator", "<="));
@@ -310,64 +311,64 @@ public class Main {
                     LexedTokens.add(new Token(52, "LESS_operator", "<"));
                     continue;
                 } else if (character == '+') {
-                    if (!temp.isEmpty()){
-                        LexedTokens.add(new Token(53, "Identifier", temp));
+                    if (!temp.isEmpty()) {
+                        LexedTokens.add(new Token(66, "Identifier", temp));
                         temp = "";
                     }
                     LexedTokens.add(new Token(53, "PLUS_operator", "+"));
                     continue;
                 } else if (character == '-') {
-                    if (!temp.isEmpty()){
-                        LexedTokens.add(new Token(53, "Identifier", temp));
+                    if (!temp.isEmpty()) {
+                        LexedTokens.add(new Token(66, "Identifier", temp));
                         temp = "";
                     }
                     LexedTokens.add(new Token(54, "MINUS_operator", "-"));
                     continue;
                 } else if (character == '*') {
-                    if (!temp.isEmpty()){
-                        LexedTokens.add(new Token(53, "Identifier", temp));
+                    if (!temp.isEmpty()) {
+                        LexedTokens.add(new Token(66, "Identifier", temp));
                         temp = "";
                     }
                     LexedTokens.add(new Token(55, "MULTIPLY_operator", "*"));
                     continue;
                 } else if (character == '/') {
-                    if (!temp.isEmpty()){
-                        LexedTokens.add(new Token(53, "Identifier", temp));
+                    if (!temp.isEmpty()) {
+                        LexedTokens.add(new Token(66, "Identifier", temp));
                         temp = "";
                     }
                     LexedTokens.add(new Token(56, "DIVIDE_operator", "/"));
                     continue;
                 } else if (character == '[') {
-                    if (!temp.isEmpty()){
-                        LexedTokens.add(new Token(53, "Identifier", temp));
+                    if (!temp.isEmpty()) {
+                        LexedTokens.add(new Token(66, "Identifier", temp));
                         temp = "";
                     }
                     LexedTokens.add(new Token(57, "LEFT_SQR_BRACE_operator", "["));
                     continue;
                 } else if (character == ']') {
-                    if (!temp.isEmpty()){
-                        LexedTokens.add(new Token(53, "Identifier", temp));
+                    if (!temp.isEmpty()) {
+                        LexedTokens.add(new Token(66, "Identifier", temp));
                         temp = "";
                     }
                     LexedTokens.add(new Token(58, "RIGHT_SQR_BRACE_operator", "]"));
                     continue;
                 } else if (character == '(') {
-                    if (!temp.isEmpty()){
-                        LexedTokens.add(new Token(53, "Identifier", temp));
+                    if (!temp.isEmpty()) {
+                        LexedTokens.add(new Token(66, "Identifier", temp));
                         temp = "";
                     }
                     LexedTokens.add(new Token(59, "LEFT_PAREN_operator", "("));
                     continue;
                 } else if (character == ')') {
-                    if (!temp.isEmpty()){
-                        LexedTokens.add(new Token(53, "Identifier", temp));
+                    if (!temp.isEmpty()) {
+                        LexedTokens.add(new Token(66, "Identifier", temp));
                         temp = "";
                     }
                     LexedTokens.add(new Token(60, "RIGHT_PAREN_operator", ")"));
                     continue;
                 } else if (character == '"') {
-                    if (!temp.isEmpty()){
-                        LexedTokens.add(new Token(53, "Identifier", temp));
+                    if (!temp.isEmpty()) {
+                        LexedTokens.add(new Token(66, "Identifier", temp));
                         temp = "";
                     }
                     LexedTokens.add(new Token(61, "DOUBLE_QUOTE_operator", "\""));
@@ -425,8 +426,7 @@ public class Main {
                             Candidates.clear();
                             Candidates.addAll(TokenTypes);
                             break;
-                        }
-                        else {
+                        } else {
                             Candidates.clear();
                             Candidates.addAll(TokenTypes);
 
@@ -437,14 +437,14 @@ public class Main {
 
                 }
 
-                if (!match){ // No match is found.
+                if (!match) { // No match is found.
                     // Clear any candidate that doesn't match.
                     String temp_ = temp;
                     Candidates.removeIf(cand -> !cand.value.startsWith(temp_));
                 }
 
                 // EDGE CASE: Identifiers, Integers, Decimals, or Errors
-                if(Candidates.isEmpty()){
+                if (Candidates.isEmpty()) {
                     System.out.println("NO CANDIDATES FOUND!");
 
                     // If beginning ASCII is 0-9, it must be an integer.
@@ -457,19 +457,17 @@ public class Main {
                         int lookAhead = 0;
                         boolean isDecimal = false;
 
-                        while(true) { // Loop through every character in the input file.
+                        while (true) { // Loop through every character in the input file.
                             // Read the character as an ASCII
                             int tempAscii = tempReader.read();
                             if (tempAscii == 46 && !isDecimal) {
                                 // If a '.' is ever read in FOR THE FIRST TIME, it must be a decimal.
                                 isDecimal = true;
-                            }
-                            else if (tempAscii == 46 && isDecimal){
+                            } else if (tempAscii == 46 && isDecimal) {
                                 // If a '.' is read in for the SECOND TIME, it's invalid.
                                 System.out.println("Period appeared twice");
                                 break;
-                            }
-                            else if (!(tempAscii >= 48 && tempAscii <= 57)) break;
+                            } else if (!(tempAscii >= 48 && tempAscii <= 57)) break;
                             lookAhead++;
                         }
 
@@ -483,8 +481,7 @@ public class Main {
                             }
                             Token token = new Token(64, "INTEGER", temp);
                             LexedTokens.add(token);
-                        }
-                        else if (isDecimal){
+                        } else if (isDecimal) {
 
                             for (int i = 0; i < lookAhead; i++) {
                                 int tempAscii = reader.read();
@@ -501,12 +498,10 @@ public class Main {
                         }
 
 
-
-
                     }
 
                     // If beginning ASCII is A-Z or a-z, it must be an identifier.
-                    else if ((temp.charAt(0) >= 65 && temp.charAt(0) <= 90) || (temp.charAt(0) >= 97 && temp.charAt(0) <= 122)){
+                    else if ((temp.charAt(0) >= 65 && temp.charAt(0) <= 90) || (temp.charAt(0) >= 97 && temp.charAt(0) <= 122)) {
                         System.out.println("Must be an identifier");
 
                         // Now, scan the last character to see if its a valid symbol.
@@ -514,12 +509,13 @@ public class Main {
                         tempReader.skip(readerPosition);
                         int lookAhead = 0;
 
-                        while(true) { // Loop through every character in the input file.
+                        while (true) { // Loop through every character in the input file.
                             // Read the character as an ASCII
                             int tempAscii = tempReader.read();
 //                            System.out.println("tempAscii: " + tempAscii);
 //                            if (tempAscii == 32 || tempAscii == 10) {break;}
-                            if (!((tempAscii >= 65 && tempAscii <= 90) || (tempAscii >= 97 && tempAscii <= 122) || (tempAscii >= 48 && tempAscii <= 57))) break;
+                            if (!((tempAscii >= 65 && tempAscii <= 90) || (tempAscii >= 97 && tempAscii <= 122) || (tempAscii >= 48 && tempAscii <= 57)))
+                                break;
                             lookAhead++;
                         }
 
@@ -532,23 +528,21 @@ public class Main {
                             System.out.println("-   Temp: " + temp);
                         }
 
-                        if (temp.equals("returns")){
+                        if (temp.equals("returns")) {
                             Token token = new Token(27, "RETURNS_keyword", temp);
                             LexedTokens.add(token);
-                        }
-                        else if (temp.equals("not=")) {
-                            Token token = new Token(111116, "Identifier", temp);
+                        } else if (temp.equals("not=")) {
+                            Token token = new Token(66, "Identifier", temp);
                             LexedTokens.add(token);
-                        }
-                       else {
-                           System.out.println("Created Identifier token");
+                        } else {
+                            System.out.println("Created Identifier token");
                             Token token = new Token(66, "Identifier", temp);
                             LexedTokens.add(token);
                         }
 
                     }
                     // If no matches above, the token must be an error.
-                    else{
+                    else {
                         System.out.println("Created ERROR token");
                         Token token = new Token(temp, true);
                         LexedTokens.add(token);
@@ -564,24 +558,15 @@ public class Main {
             }
 
 
-
-
-
-
-
             System.out.println("\n =====   ALL TOKENS   ===== ");
             for (int i = 0; i < LexedTokens.size(); i++) {
                 LexedTokens.get(i).printToken();
             }
 
 
-
-
-
-
         } catch (FileNotFoundException e) {
             System.out.println("ERROR: File not found.");
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("ERROR: Something went wrong.");
 
         }
