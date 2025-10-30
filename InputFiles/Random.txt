@@ -1,0 +1,10 @@
+/*
+      This input file is meant to test lexer functionality for ordered chaos. This file will
+      consist of keywords, operators, strings, integers, decimals, comments.
+                                                                                                    */
+
+return[return(returns+ifelseif*if*)]++   // Random Keyword Sequence!
+ident[+](-")id+output
+"^^^    "test(else+private)/:
+ERRORS;;;_ notError_
+/* ~ */ 12.243*+message@mod

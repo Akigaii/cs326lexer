@@ -1,0 +1,27 @@
+/*
+          This input file is meant to test lexer functionality for strings.
+                                                                                        */
+
+"string"
+
+"multi
+ line
+ string"
+
+""
+
+""""
+
+"."+."."
+
+"class"
+
+"123"
+
+"123.123"
+
+"903_3904"
+
+"jnfkewnifonewik"
+
+"そなはいななんはいちは"

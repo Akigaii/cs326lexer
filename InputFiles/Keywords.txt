@@ -1,5 +1,5 @@
 /*
-             This input file is meant to test all possible keywords.
+     This input file is meant to test lexer functionality for all possible keywords.
                                                                                         */
 
 output

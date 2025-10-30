@@ -49,7 +49,7 @@ public class Main {
         File dir = new File(directoryPath);
         File[] directoryListing = dir.listFiles();
         for (File child : directoryListing) {
-            System.out.println("\n =====   ALL TOKENS FOR " + "\"" + child.getName() + "\""+  "   =====");
+            System.out.println("\n =========     ALL TOKENS FOR " + "\"" + child.getName() + "\""+  "     =========");
             lexer(directoryPath + '/' + child.getName());
         }
     }

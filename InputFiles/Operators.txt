@@ -2,3 +2,10 @@
      This input file is meant to test operator functionality. More specifically,
      how it interacts with strings, identifiers, integers, decimals, and keywords.
                                                                                         */
+1 + 2
+one-2
+:colon,comma"doublequote
+int[x]not= >= not(79.2)
+900 > 9 >= 0.9
+id<=>==not=<+*((if[
+
