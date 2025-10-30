@@ -45,6 +45,8 @@ Token Category: 27, Category Name: RETURNS_Keyword, Value: returns
 Token Category: 28, Category Name: RETURN_Keyword, Value: return
 Token Category: 27, Category Name: RETURNS_Keyword, Value: returns
 Token Category: 28, Category Name: RETURN_Keyword, Value: return
+Token Category: 66, Category Name: Identifier, Value: return_
+Token Category: 66, Category Name: Identifier, Value: returns_
 Token Category: 66, Category Name: Identifier, Value: returnS
 Token Category: 28, Category Name: RETURN_Keyword, Value: return
 Token Category: 66, Category Name: Identifier, Value: testIdentifier
@@ -71,6 +73,9 @@ ERROR: ; is invalid.
 Token Category: 68, Category Name: COMMENT, Value: // "not" & "not=" test cases:
 Token Category: 45, Category Name: NOT_operator, Value: not
 Token Category: 66, Category Name: Identifier, Value: nOt
+Token Category: 66, Category Name: Identifier, Value: not_
+Token Category: 46, Category Name: NOTEQUALS_operator, Value: not=
+ERROR: _ is invalid.
 Token Category: 46, Category Name: NOTEQUALS_operator, Value: not=
 Token Category: 66, Category Name: Identifier, Value: noT
 Token Category: 50, Category Name: EQUALITY_operator, Value: =
@@ -286,6 +291,10 @@ ERROR: _ is invalid.
 Token Category: 66, Category Name: Identifier, Value: identifier
 Token Category: 66, Category Name: Identifier, Value: IDEN234TIFier
 Token Category: 66, Category Name: Identifier, Value: IDEN2___3TIFier
+Token Category: 66, Category Name: Identifier, Value: undefined_
+Token Category: 66, Category Name: Identifier, Value: unde_fined
+ERROR: _ is invalid.
+Token Category: 31, Category Name: UNDEFINED_Keyword, Value: undefined
 
  =========     ALL TOKENS FOR "Garbage.txt"     =========
 Token Category: 68, Category Name: COMMENT, Value: /*

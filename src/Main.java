@@ -293,7 +293,7 @@ public class Main {
                                 KeywordCandidates.addAll(TokenTypes);
                                 break;
 
-                            } else if (!Character.isLetterOrDigit(lookAheadOneChar(readerPosition, filePath))){
+                            } else if (!Character.isLetterOrDigit(lookAheadOneChar(readerPosition, filePath)) && lookAheadOneChar(readerPosition, filePath) != '_'){
                                 LexedTokens.add(new Token(45, "NOT_operator", temp));
                                 temp = "";
                                 KeywordCandidates.clear();
@@ -332,7 +332,7 @@ public class Main {
                         char tempCharacter2 = (char) tempAscii2;
 
                         // If this is triggered, it is not a keyword anymore, it's an identifier.
-                        if (!Character.isLetterOrDigit(tempCharacter2)) {
+                        if (!Character.isLetterOrDigit(tempCharacter2) && tempCharacter2 != '_') {
                             Token token = new Token(KeywordCandidates.get(i).category, KeywordCandidates.get(i).categoryName, KeywordCandidates.get(i).value);
                             LexedTokens.add(token);
                             temp = "";

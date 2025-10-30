@@ -8,6 +8,8 @@
     return
     returns
     return returns return
+    return_
+    returns_
     returnS
     return testIdentifier
     returns+return(returnIdentifier1 > returnIdentifier2)
@@ -17,6 +19,8 @@
 // "not" & "not=" test cases:
     not
     nOt
+    not_
+    not=_
     not=
     noT=
     not=Not=not
