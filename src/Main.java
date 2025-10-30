@@ -6,56 +6,70 @@ import java.util.ArrayList;
 import java.io.IOException;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-
-class Token {
-    int category;
-    String categoryName;
-    String value;
-    boolean error;
-
-    public Token(int category, String categoryName, String value) {
-        this.category = category;
-        this.categoryName = categoryName;
-        this.value = value;
-        this.error = false;
-    }
-
-    public Token(String value, boolean error) {
-        this.category = -1;
-        this.categoryName = "ERROR";
-        this.value = value;
-        this.error = true;
-    }
-
-    public void printToken() {
-        if (error) System.out.println("ERROR: " + this.value + " is invalid.");
-        else
-            System.out.println("Token Category: " + category + ", Category Name: " + categoryName + ", Value: " + value);
-    }
-
-    public String getToken() {
-        if (error) return "ERROR: " + this.value + " is invalid.";
-        else
-            return "Token Category: " + category + ", Category Name: " + categoryName + ", Value: " + value;
-    }
-
-}
+import java.io.*;
 
 
 public class Main {
+
+    static class Token {
+        int category;
+        String categoryName;
+        String value;
+        boolean error;
+
+        public Token(int category, String categoryName, String value) {
+            this.category = category;
+            this.categoryName = categoryName;
+            this.value = value;
+            this.error = false;
+        }
+
+        public Token(String value, boolean error) {
+            this.category = -1;
+            this.categoryName = "ERROR";
+            this.value = value;
+            this.error = true;
+        }
+
+        public void printToken() {
+            if (error){
+                System.out.println("ERROR: " + this.value + " is invalid.");
+//                content = content + "ERROR: " + this.value + " is invalid.";
+            }
+            else{
+                System.out.println("Token Category: " + category + ", Category Name: " + categoryName + ", Value: " + value);
+//                content = content + "Token Category: " + category + ", Category Name: " + categoryName + ", Value: " + value;
+            }
+        }
+
+        public String getToken() {
+            if (error) return "ERROR: " + this.value + " is invalid.";
+            else
+                return "Token Category: " + category + ", Category Name: " + categoryName + ", Value: " + value;
+        }
+
+    }
 
     public static void main(String[] args) throws Exception{
         String directoryPath = "/Users/xmastersteel/IdeaProjects/Lexer/InputFiles";
         File dir = new File(directoryPath);
         File[] directoryListing = dir.listFiles();
+
+        // Redirect all console output into "Output.txt" instead.
+        PrintStream fileOut = new PrintStream("Output.txt");
+        System.setOut(fileOut);
+
         for (File child : directoryListing) {
             System.out.println("\n =========     ALL TOKENS FOR " + "\"" + child.getName() + "\""+  "     =========");
             lexer(directoryPath + '/' + child.getName());
         }
     }
 
+    public static String content = "";
+
+    public static ArrayList<Token> TokenTypes = new ArrayList<>();
+
     public static void lexer(String filePath){
-        ArrayList<Token> TokenTypes = new ArrayList<>();
         if (true) {
             TokenTypes.add(new Token(1, "OUTPUT_Keyword", "output"));
             TokenTypes.add(new Token(2, "ON_Keyword", "on"));
@@ -602,20 +616,6 @@ public class Main {
             for (int i = 0; i < LexedTokens.size(); i++) {
                 LexedTokens.get(i).printToken();
             }
-
-//            String fileName = "TEST_return_not=output.txt";
-//            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-//                for (int i = 0; i < LexedTokens.size(); i++) {
-//                    writer.write(LexedTokens.get(i).getToken());
-//                    writer.newLine();
-//                }
-//                System.out.println("Content successfully written to " + fileName);
-//            } catch (IOException e) {
-//                System.err.println("An error occurred while writing to the file: " + e.getMessage());
-//            }
-
-
-
 
 
         } catch (FileNotFoundException e) {
