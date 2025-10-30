@@ -38,12 +38,25 @@ public class Main {
         }
     }
 
-    public static boolean containsChar(char character, char[] charArray) {
-        for (int i = 0; i < charArray.length; i++) {
-            if (character == charArray[i]) return true;
-        }
+
+    public static boolean isOperator(char character){
+        char[] operators = {':', '.', ',', '=', '>', '<', '+', '-', '*', '/', '[', ']', '(', ')', '\"'};
+        for (char operator : operators) if (character == operator) return true;
         return false;
     }
+
+    public static boolean isLetter(char character){
+        int ascii = (int) character;
+        if ((ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122)) return true;
+        return false;
+    }
+
+    public static boolean isDigit(char character){
+        int ascii = (int) character;
+        if ((ascii >= 48 && ascii <= 57)) return true;
+        return false;
+    }
+
 
     public static void repopulate (ArrayList<Token> victim, ArrayList<Token> target){
         victim.clear();
@@ -51,7 +64,7 @@ public class Main {
     }
 
     public static char lookAheadOneChar(int currentPosition, String filePath) {
-        try {
+        try { // Returns the next character of a reader without updating it.
             BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
             tempReader.skip(currentPosition);
             int ascii =  tempReader.read();
@@ -63,7 +76,7 @@ public class Main {
     }
 
     public static int matchCaseDistance(int currentPosition, char match, String filePath) {
-        try {
+        try { // Finds distance between reader position on a single match character.
             int distance = 0;
             BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
             tempReader.skip(currentPosition);
@@ -81,9 +94,36 @@ public class Main {
         }
     }
 
-    public static boolean matchCaseExists(int currentPosition, char match, String filePath) {
+    public static int matchCaseDistance2(int currentPosition, char match1, char match2, String filePath) {
+        try { // Finds distance between reader position on two sequential match characters.
+            int distance = 0;
+            BufferedReader slow = new BufferedReader(new FileReader(filePath));
+            BufferedReader fast = new BufferedReader(new FileReader(filePath));
+            slow.skip(currentPosition);
+            fast.skip(currentPosition + 1);
+            while (true) {
+                int slowAscii = slow.read();
+                int fastAscii = fast.read();
+                char slowCharacter = (char) slowAscii;
+                char fastCharacter = (char) fastAscii;
+                if (fastAscii == -1) break;
+                if (distance != 0 && slowCharacter == match1 && fastCharacter == match2) {
+                    distance += 2;
+                    break;
+                }
+                distance++;
+            }
+            return distance;
 
-        try{
+        }
+        catch (Exception e) {
+            return -999;
+        }
+    }
+
+
+    public static boolean matchCaseExists(int currentPosition, char match, String filePath) {
+        try{ // Traverse method to find a single-character match case.
             BufferedReader lookAheadReader = new BufferedReader(new FileReader(filePath));
             lookAheadReader.skip(currentPosition);
             while (true) {
@@ -93,16 +133,38 @@ public class Main {
                 else if (tempCharacter == match) return true;
             }
         }
-
         catch (Exception e){
             return false;
         }
+    }
 
+    public static boolean matchCaseExists2(int currentPosition, char match1, char match2, String filePath) {
+        try{ // Utilize two-pointer method to find a two-character match case.
+            BufferedReader slow = new BufferedReader(new FileReader(filePath));
+            BufferedReader fast = new BufferedReader(new FileReader(filePath));
+            slow.skip(currentPosition);
+            fast.skip(currentPosition + 1);
+            int lookAhead = 0;
+            while (true) {
+                int slowAscii = slow.read();
+                int fastAscii = fast.read();
+                char slowCharacter = (char) slowAscii;
+                char fastCharacter = (char) fastAscii;
+                if (fastAscii == -1) return false;
+                if (slowCharacter == match1 && fastCharacter == match2 && lookAhead != 0) {
+                    return true;
+                }
+                lookAhead++;
+            }
+        }
+        catch (Exception e) {
+            return false;
+        }
     }
 
 
     public static String appendChars(int amt, String str, BufferedReader reader, int readerPosition) {
-        try {
+        try { // Appends characters from reader to a string 'amt' times.
             for (int i = 0; i < amt; i++) {
                 int ascii = reader.read();
                 readerPosition++;
@@ -118,6 +180,7 @@ public class Main {
 
 
     public static void main(String[] args) throws Exception{
+        // Read in input files located inside a directory.
         String directoryPath = "/Users/xmastersteel/IdeaProjects/Lexer/InputFiles";
         File dir = new File(directoryPath);
         File[] directoryListing = dir.listFiles();
@@ -135,7 +198,6 @@ public class Main {
 
 
     public static void lexer(String filePath){
-
         try {
             ArrayList<Token> KeywordCandidates = new ArrayList<>(TokenTypes);
             ArrayList<Token> LexedTokens       = new ArrayList<>();
@@ -182,8 +244,9 @@ public class Main {
                     }
                 }
 
-                // EDGE CASE: Single line comments
+                // EDGE CASE: Comments
                 if (character == '/') {
+                    // Single-line comments.
                     if (lookAheadOneChar(readerPosition, filePath) == '/') {
                         int lookAhead = matchCaseDistance(readerPosition + 1, '\n', filePath) + 1;
                         temp += character + appendChars(lookAhead, temp, reader, readerPosition);
@@ -192,64 +255,26 @@ public class Main {
                         temp = "";
                         continue;
                     }
-                }
-
-                // EDGE CASE: Multi line comments
-                if (character == '/') {
-                    boolean isComment = false;
-                    int lookAhead = 0;
-
+                    // Multi-line comments.
                     if (lookAheadOneChar(readerPosition, filePath) == '*') {
-
-//                          if (matchCaseExists(readerPosition, '*', filePath) &&
-//                              matchCaseExists(readerPosition + 1, '/', filePath)
-//                              && readerPosition != '*'){
-//                              int lookAhead = matchCaseDistance(readerPosition + 2, '/', filePath) + 1;
-//                              temp += character + appendChars(lookAhead, temp, reader, readerPosition);
-//                              readerPosition += lookAhead;
-//                              continue;
-//                          }
-
-                        String potentialComment = "";
-                        BufferedReader fast = new BufferedReader(new FileReader(filePath));
-                        BufferedReader slow = new BufferedReader(new FileReader(filePath));
-                        fast.skip(readerPosition + 1);
-                        slow.skip(readerPosition);
-
-                        while (true) {
-                            int slowAscii = slow.read();
-                            int fastAscii = fast.read();
-                            char slowCharacter = (char) slowAscii;
-                            char tempCharacter = (char) fastAscii;
-                            if (fastAscii == -1) break;
-                            if (slowCharacter == '*' && tempCharacter == '/' && lookAhead != 0) {
-                                isComment = true;
-                                lookAhead += 2;
-                                break;
-                            }
-                            potentialComment = potentialComment + tempCharacter;
-                            lookAhead++;
+                        if (matchCaseExists2(readerPosition, '*','/', filePath)) {
+                            int lookAhead = matchCaseDistance2(readerPosition, '*', '/', filePath);
+                            temp = character + appendChars(lookAhead, temp, reader, readerPosition);
+                            readerPosition += lookAhead;
+                            LexedTokens.add(new Token(68, "COMMENT", temp));
+                            temp = "";
+                            continue;
                         }
-                    }
-                    if (isComment) {
-                        temp = character + appendChars(lookAhead, temp, reader, readerPosition);
-                        readerPosition += lookAhead;
-                        LexedTokens.add(new Token(68, "COMMENT", temp));
-                        temp = "";
-                        continue;
                     }
                 }
 
                 // EDGE CASES: Operators.
-                char[] operators = {':', '.', ',', '=', '>', '<', '+', '-', '*', '/', '[', ']', '(', ')', '\"'};
-                if (containsChar(character, operators)) {
-
+                if (isOperator(character)) {
                     // Since operators are delimiters, temp (if it exists) must be an ID.
                     if (!temp.isEmpty()) {
                         LexedTokens.add(new Token(66, "Identifier", temp));
                         temp = "";
                     }
-
                     // Go through all possible operators in TokenTypes.
                     for (Token token : TokenTypes) {
                         if (token.value.charAt(0) == character) {
@@ -280,68 +305,33 @@ public class Main {
                     if (temp.equals(KeywordCandidates.get(i).value)) {
                         match = true;
 
-                        // EDGE CASE: Keyword inside a keyword.
+                        // EDGE CASE: Keyword contains an operator.
                         if (temp.equals("not") || temp.equals("Not")) {
-
                             if (lookAheadOneChar(readerPosition, filePath) == '=') {
-                                int x = reader.read();
-                                temp = temp + (char) x;
+                                LexedTokens.add(new Token(46, "NOTEQUALS_Keyword", temp + (char) reader.read()));
                                 readerPosition++;
-                                LexedTokens.add(new Token(46, "NOTEQUALS_operator", temp));
                                 temp = "";
-                                KeywordCandidates.clear();
-                                KeywordCandidates.addAll(TokenTypes);
+                                repopulate(KeywordCandidates, TokenTypes);
                                 break;
-
-                            } else if (!Character.isLetterOrDigit(lookAheadOneChar(readerPosition, filePath)) && lookAheadOneChar(readerPosition, filePath) != '_'){
-                                LexedTokens.add(new Token(45, "NOT_operator", temp));
+                            } else if (!Character.isLetterOrDigit(lookAheadOneChar(readerPosition, filePath)) &&
+                                        lookAheadOneChar(readerPosition, filePath) != '_'){
+                                LexedTokens.add(new Token(45, "NOT_Keyword", temp));
                                 temp = "";
-                                KeywordCandidates.clear();
-                                KeywordCandidates.addAll(TokenTypes);
+                                repopulate(KeywordCandidates, TokenTypes);
                                 break;
                             }
-
-//                            else{ // It's an identifier.
-//                                BufferedReader tempReader2 = new BufferedReader(new FileReader(filePath));
-//                                tempReader2.skip(readerPosition); // Lookahead.
-//                                int lookAhead = 0;
-//                                while (true){
-//                                    int tempAscii2 = tempReader2.read();
-//                                    char tempCharacter2 = (char) tempAscii2;
-//                                    if (!Character.isLetterOrDigit(tempCharacter2)) break;
-//                                    lookAhead++;
-//                                }
-//                                for (int j = 0; j < lookAhead; j++){
-//                                    int x = reader.read();
-//                                    char y =  (char) x;
-//                                    temp = temp + y;
-//                                    readerPosition++;
-//                                }
-//                                Token token = new Token(66, "Identifier", temp);
-//                                temp = "";
-//                                LexedTokens.add(token);
-//                                repopulate(KeywordCandidates, TokenTypes);
-//                                break;
-//                            }
                         }
 
-                        // Lookahead one token to finally confirm its a keyword.
-                        BufferedReader tempReader2 = new BufferedReader(new FileReader(filePath));
-                        tempReader2.skip(readerPosition);
-                        int tempAscii2 = tempReader2.read();
-                        char tempCharacter2 = (char) tempAscii2;
-
                         // If this is triggered, it is not a keyword anymore, it's an identifier.
-                        if (!Character.isLetterOrDigit(tempCharacter2) && tempCharacter2 != '_') {
+                        // This also handles the "return" vs "returns" edge case.
+                        char lookAhead = lookAheadOneChar(readerPosition, filePath);
+                        if (!Character.isLetterOrDigit(lookAhead) && lookAhead != '_') {
                             Token token = new Token(KeywordCandidates.get(i).category, KeywordCandidates.get(i).categoryName, KeywordCandidates.get(i).value);
                             LexedTokens.add(token);
                             temp = "";
-                            repopulate(KeywordCandidates, TokenTypes);
-                            break;
-                        } else {
-                            repopulate(KeywordCandidates, TokenTypes);
-                            break;
                         }
+                        repopulate(KeywordCandidates, TokenTypes);
+                        break;
                     }
                 }
 
@@ -354,8 +344,8 @@ public class Main {
                 // EDGE CASE: Identifiers, Integers, Decimals, or Errors
                 if (KeywordCandidates.isEmpty()) {
 
-                    // If beginning ASCII is 0-9, it must be an integer.
-                    if (temp.charAt(0) >= 48 && temp.charAt(0) <= 57) {
+                    // If beginning ASCII is 0-9, it must be an integer or decimal.
+                    if (isDigit(temp.charAt(0))) {
 
                         // Now, keep reading for all integers until you reach a non-integer.
                         BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
@@ -363,80 +353,50 @@ public class Main {
                         int lookAhead = 0;
                         boolean isDecimal = false;
 
-                        while (true) { // Loop through every character in the input file.
+                        // Loop through every character in the input file.
+                        while (true) {
                             int tempAscii = tempReader.read();
-                            if (tempAscii == 46 && !isDecimal) {
-                                // If a '.' is ever read in FOR THE FIRST TIME, it must be a decimal.
-                                isDecimal = true;
-                            } else if (tempAscii == 46 && isDecimal) {
-                                // If a '.' is read in for the SECOND TIME, it's invalid.
-                                break;
-                            } else if (!(tempAscii >= 48 && tempAscii <= 57)) break;
+                            char tempCharacter = (char) tempAscii;
+                            if       (tempCharacter == '.' && !isDecimal)  isDecimal = true;
+                            else if  (tempCharacter == '.' && isDecimal)   break;
+                            else if  (!isDigit(tempCharacter))             break;
                             lookAhead++;
                         }
 
-                        if (!isDecimal) {
-                            for (int i = 0; i < lookAhead; i++) {
-                                int tempAscii = reader.read();
-                                char tempCharacter = (char) tempAscii;
-                                readerPosition++;
-                                temp = temp + tempCharacter;
-                            }
-                            Token token = new Token(64, "INTEGER", temp);
-                            LexedTokens.add(token);
-
-                        } else if (isDecimal) {
-                            for (int i = 0; i < lookAhead; i++) {
-                                int tempAscii = reader.read();
-                                char tempCharacter = (char) tempAscii;
-                                readerPosition++;
-                                temp = temp + tempCharacter;
-                            }
-
-                            Token token = new Token(65, "DECIMAL", temp);
-                            LexedTokens.add(token);
-                        }
+                        // Determine if it is an integer or decimal.
+                        temp = appendChars(lookAhead, temp, reader, readerPosition);
+                        readerPosition += lookAhead;
+                        if       (!isDecimal) LexedTokens.add(new Token(64, "INTEGER", temp));
+                        else if  (isDecimal)  LexedTokens.add(new Token(65, "DECIMAL", temp));
 
                     }
 
                     // If beginning ASCII is A-Z or a-z, it must be an identifier.
-                    else if ((temp.charAt(0) >= 65 && temp.charAt(0) <= 90) || (temp.charAt(0) >= 97 && temp.charAt(0) <= 122)) {
+                    else if (isLetter(temp.charAt(0))) {
 
                         // Now, scan the last character to see if its a valid symbol.
                         BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
                         tempReader.skip(readerPosition);
                         int lookAhead = 0;
 
+                        // If identifier, next characters must be a-z, A-Z, 0-9, or an underscore.
                         while (true) {
                             int tempAscii = tempReader.read();
-                            if (!((tempAscii >= 65 && tempAscii <= 90) || (tempAscii >= 97 && tempAscii <= 122) || (tempAscii >= 48 && tempAscii <= 57) || tempAscii == 95))
-                                break;
+                            char tempCharacter = (char) tempAscii;
+                            if  (!((isLetter(tempCharacter))
+                                 || (isDigit(tempCharacter))
+                                 || (tempCharacter == '_'))) break;
                             lookAhead++;
                         }
 
-                        for (int i = 0; i < lookAhead; i++) {
-                            int tempAscii = reader.read();
-                            char tempCharacter = (char) tempAscii;
-                            readerPosition++;
-                            temp = temp + tempCharacter;
-                        }
-
-                        if (temp.equals("returns")) {
-                            Token token = new Token(27, "RETURNS_keyword", temp);
-                            LexedTokens.add(token);
-                        } else if (temp.equals("not=")) {
-                            Token token = new Token(46, "NOTEQUALS_keyword", temp);
-                            LexedTokens.add(token);
-                        } else {
-                            Token token = new Token(66, "Identifier", temp);
-                            LexedTokens.add(token);
-                        }
-
+                        // Classify as an identifier.
+                        temp = appendChars(lookAhead, temp, reader, readerPosition);
+                        readerPosition += lookAhead;
+                        LexedTokens.add(new Token(66, "Identifier", temp));
                     }
 
-                    else { // If no matches above, the token must be an error.
-                        LexedTokens.add(new Token(temp, true));
-                    }
+                    // If no matches above, the token must be an error.
+                    else LexedTokens.add(new Token(temp, true));
 
                     // Reset candidates and temp String.
                     repopulate(KeywordCandidates, TokenTypes);
@@ -446,7 +406,6 @@ public class Main {
 
             // Print out all stored tokens.
             for (Token lexedToken : LexedTokens) lexedToken.printToken();
-
 
         } catch (FileNotFoundException e) {
             System.out.println("ERROR: File not found.");

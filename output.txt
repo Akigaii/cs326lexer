@@ -6,7 +6,7 @@ Token Category: 68, Category Name: COMMENT, Value: /*
 Token Category: 68, Category Name: COMMENT, Value: // this is a comment
 Token Category: 66, Category Name: Identifier, Value: this
 Token Category: 17, Category Name: INHERITS_Keyword, Value: is
-Token Category: 45, Category Name: NOT_operator, Value: not
+Token Category: 45, Category Name: NOT_Keyword, Value: not
 Token Category: 66, Category Name: Identifier, Value: a
 Token Category: 66, Category Name: Identifier, Value: comment
 Token Category: 68, Category Name: COMMENT, Value: //
@@ -71,36 +71,36 @@ Token Category: 27, Category Name: RETURNS_Keyword, Value: returns
 Token Category: 67, Category Name: STRING, Value: "not@not=.com"
 ERROR: ; is invalid.
 Token Category: 68, Category Name: COMMENT, Value: // "not" & "not=" test cases:
-Token Category: 45, Category Name: NOT_operator, Value: not
+Token Category: 45, Category Name: NOT_Keyword, Value: not
 Token Category: 66, Category Name: Identifier, Value: nOt
 Token Category: 66, Category Name: Identifier, Value: not_
-Token Category: 46, Category Name: NOTEQUALS_operator, Value: not=
+Token Category: 46, Category Name: NOTEQUALS_Keyword, Value: not=
 ERROR: _ is invalid.
-Token Category: 46, Category Name: NOTEQUALS_operator, Value: not=
+Token Category: 46, Category Name: NOTEQUALS_Keyword, Value: not=
 Token Category: 66, Category Name: Identifier, Value: noT
 Token Category: 50, Category Name: EQUALITY_operator, Value: =
-Token Category: 46, Category Name: NOTEQUALS_operator, Value: not=
-Token Category: 46, Category Name: NOTEQUALS_operator, Value: Not=
-Token Category: 45, Category Name: NOT_operator, Value: not
-Token Category: 46, Category Name: NOTEQUALS_operator, Value: not=
+Token Category: 46, Category Name: NOTEQUALS_Keyword, Value: not=
+Token Category: 46, Category Name: NOTEQUALS_Keyword, Value: Not=
+Token Category: 45, Category Name: NOT_Keyword, Value: not
+Token Category: 46, Category Name: NOTEQUALS_Keyword, Value: not=
 Token Category: 59, Category Name: LEFT_PAREN_operator, Value: (
-Token Category: 46, Category Name: NOTEQUALS_operator, Value: not=
+Token Category: 46, Category Name: NOTEQUALS_Keyword, Value: not=
 Token Category: 66, Category Name: Identifier, Value: nott
 Token Category: 50, Category Name: EQUALITY_operator, Value: =
-Token Category: 45, Category Name: NOT_operator, Value: not
+Token Category: 45, Category Name: NOT_Keyword, Value: not
 Token Category: 60, Category Name: RIGHT_PAREN_operator, Value: )
 Token Category: 51, Category Name: GREATER_operator, Value: >
 Token Category: 66, Category Name: Identifier, Value: notNOT
 Token Category: 59, Category Name: LEFT_PAREN_operator, Value: (
-Token Category: 46, Category Name: NOTEQUALS_operator, Value: not=
+Token Category: 46, Category Name: NOTEQUALS_Keyword, Value: not=
 Token Category: 60, Category Name: RIGHT_PAREN_operator, Value: )
 Token Category: 67, Category Name: STRING, Value: "notNOT"
-Token Category: 45, Category Name: NOT_operator, Value: not
+Token Category: 45, Category Name: NOT_Keyword, Value: not
 Token Category: 59, Category Name: LEFT_PAREN_operator, Value: (
 Token Category: 60, Category Name: RIGHT_PAREN_operator, Value: )
 Token Category: 52, Category Name: LESS_operator, Value: <
 Token Category: 52, Category Name: LESS_operator, Value: <
-Token Category: 45, Category Name: NOT_operator, Value: not
+Token Category: 45, Category Name: NOT_Keyword, Value: not
 Token Category: 53, Category Name: PLUS_operator, Value: +
 Token Category: 64, Category Name: INTEGER, Value: 902
 Token Category: 50, Category Name: EQUALITY_operator, Value: =
@@ -152,10 +152,10 @@ Token Category: 35, Category Name: NUMBER_Keyword, Value: number
 Token Category: 36, Category Name: TEXT_Keyword, Value: text
 Token Category: 37, Category Name: BOOLEAN_Keyword, Value: boolean
 Token Category: 38, Category Name: USE_Keyword, Value: use
-Token Category: 45, Category Name: NOT_operator, Value: not
-Token Category: 45, Category Name: NOT_operator, Value: Not
-Token Category: 46, Category Name: NOTEQUALS_operator, Value: not=
-Token Category: 46, Category Name: NOTEQUALS_operator, Value: Not=
+Token Category: 45, Category Name: NOT_Keyword, Value: not
+Token Category: 45, Category Name: NOT_Keyword, Value: Not
+Token Category: 46, Category Name: NOTEQUALS_Keyword, Value: not=
+Token Category: 46, Category Name: NOTEQUALS_Keyword, Value: Not=
 Token Category: 39, Category Name: MODULO_Keyword, Value: mod
 Token Category: 40, Category Name: IF_Keyword, Value: if
 Token Category: 41, Category Name: END_Keyword, Value: end
@@ -450,9 +450,9 @@ Token Category: 66, Category Name: Identifier, Value: int
 Token Category: 57, Category Name: LEFT_SQR_BRACE_operator, Value: [
 Token Category: 66, Category Name: Identifier, Value: x
 Token Category: 58, Category Name: RIGHT_SQR_BRACE_operator, Value: ]
-Token Category: 46, Category Name: NOTEQUALS_operator, Value: not=
+Token Category: 46, Category Name: NOTEQUALS_Keyword, Value: not=
 Token Category: 63, Category Name: GREATER_EQUAL_operator, Value: >=
-Token Category: 45, Category Name: NOT_operator, Value: not
+Token Category: 45, Category Name: NOT_Keyword, Value: not
 Token Category: 59, Category Name: LEFT_PAREN_operator, Value: (
 Token Category: 65, Category Name: DECIMAL, Value: 79.2
 Token Category: 60, Category Name: RIGHT_PAREN_operator, Value: )
@@ -465,7 +465,7 @@ Token Category: 66, Category Name: Identifier, Value: id
 Token Category: 62, Category Name: LESS_EQUAL_operator, Value: <=
 Token Category: 63, Category Name: GREATER_EQUAL_operator, Value: >=
 Token Category: 50, Category Name: EQUALITY_operator, Value: =
-Token Category: 46, Category Name: NOTEQUALS_operator, Value: not=
+Token Category: 46, Category Name: NOTEQUALS_Keyword, Value: not=
 Token Category: 52, Category Name: LESS_operator, Value: <
 Token Category: 53, Category Name: PLUS_operator, Value: +
 Token Category: 55, Category Name: MULTIPLY_operator, Value: *
