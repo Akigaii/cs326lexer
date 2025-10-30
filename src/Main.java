@@ -38,6 +38,13 @@ public class Main {
         }
     }
 
+    public static boolean containsChar(char character, char[] charArray) {
+        for (int i = 0; i < charArray.length; i++) {
+            if (character == charArray[i]) return true;
+        }
+        return false;
+    }
+
     public static void repopulate (ArrayList<Token> victim, ArrayList<Token> target){
         victim.clear();
         victim.addAll(target);
@@ -55,23 +62,44 @@ public class Main {
         }
     }
 
-    public static int matchCaseDistance(int currentPosition, String filePath) {
+    public static int matchCaseDistance(int currentPosition, char match, String filePath) {
         try {
             int distance = 0;
             BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
-            tempReader.skip(currentPosition + 1);
+            tempReader.skip(currentPosition);
             while (true) {
                 int tempAscii = tempReader.read();
                 char tempCharacter = (char) tempAscii;
-                if (tempAscii == -1 || tempCharacter == '\n') break;
+                if (tempAscii == -1 || tempCharacter == match) break;
                 distance++;
             }
             return distance;
+
         }
         catch (Exception e) {
             return -999;
         }
     }
+
+    public static boolean matchCaseExists(int currentPosition, char match, String filePath) {
+
+        try{
+            BufferedReader lookAheadReader = new BufferedReader(new FileReader(filePath));
+            lookAheadReader.skip(currentPosition);
+            while (true) {
+                int tempAscii = lookAheadReader.read();
+                char tempCharacter = (char) tempAscii;
+                if (tempAscii == -1) return false;
+                else if (tempCharacter == match) return true;
+            }
+        }
+
+        catch (Exception e){
+            return false;
+        }
+
+    }
+
 
     public static String appendChars(int amt, String str, BufferedReader reader, int readerPosition) {
         try {
@@ -107,6 +135,7 @@ public class Main {
 
 
     public static void lexer(String filePath){
+
         try {
             ArrayList<Token> KeywordCandidates = new ArrayList<>(TokenTypes);
             ArrayList<Token> LexedTokens       = new ArrayList<>();
@@ -117,6 +146,7 @@ public class Main {
             // Loop through every character in the input file.
             while (true) {
 
+                // Current input file character's attributes.
                 int ascii = reader.read();
                 char character = (char) ascii;
                 readerPosition++;
@@ -142,28 +172,10 @@ public class Main {
 
                 // EDGE CASE: Strings
                 if (character == '"') {
-                    boolean doubleQuoteExists = false;
-                    BufferedReader lookAheadReader = new BufferedReader(new FileReader(filePath));
-                    lookAheadReader.skip(readerPosition);
-                    int lookAhead = 1;
-                    while (true) {
-                        int tempAscii = lookAheadReader.read();
-                        char tempCharacter = (char) tempAscii;
-                        if (tempAscii == -1) break;
-                        else if (tempCharacter == '"') {
-                            doubleQuoteExists = true;
-                            break;
-                        }
-                        lookAhead++;
-                    }
-                    if (doubleQuoteExists) {
-                        for (int i = 0; i < lookAhead; i++) {
-                            ascii = reader.read();
-                            readerPosition++;
-                            character = (char) ascii;
-                            temp = temp + character;
-                        }
-                        temp = '"' + temp;
+                    if (matchCaseExists(readerPosition, '"', filePath)) {
+                        int lookAhead = matchCaseDistance(readerPosition, '"', filePath) + 1;
+                        temp += character + appendChars(lookAhead, temp, reader, readerPosition);
+                        readerPosition += lookAhead;
                         LexedTokens.add(new Token(67, "STRING", temp));
                         temp = "";
                         continue;
@@ -173,7 +185,7 @@ public class Main {
                 // EDGE CASE: Single line comments
                 if (character == '/') {
                     if (lookAheadOneChar(readerPosition, filePath) == '/') {
-                        int lookAhead = matchCaseDistance(readerPosition, filePath) + 1;
+                        int lookAhead = matchCaseDistance(readerPosition + 1, '\n', filePath) + 1;
                         temp += character + appendChars(lookAhead, temp, reader, readerPosition);
                         readerPosition += lookAhead;
                         LexedTokens.add(new Token(68, "COMMENT", temp));
@@ -188,6 +200,16 @@ public class Main {
                     int lookAhead = 0;
 
                     if (lookAheadOneChar(readerPosition, filePath) == '*') {
+
+//                          if (matchCaseExists(readerPosition, '*', filePath) &&
+//                              matchCaseExists(readerPosition + 1, '/', filePath)
+//                              && readerPosition != '*'){
+//                              int lookAhead = matchCaseDistance(readerPosition + 2, '/', filePath) + 1;
+//                              temp += character + appendChars(lookAhead, temp, reader, readerPosition);
+//                              readerPosition += lookAhead;
+//                              continue;
+//                          }
+
                         String potentialComment = "";
                         BufferedReader fast = new BufferedReader(new FileReader(filePath));
                         BufferedReader slow = new BufferedReader(new FileReader(filePath));
@@ -209,7 +231,6 @@ public class Main {
                             lookAhead++;
                         }
                     }
-
                     if (isComment) {
                         temp = character + appendChars(lookAhead, temp, reader, readerPosition);
                         readerPosition += lookAhead;
@@ -219,130 +240,33 @@ public class Main {
                     }
                 }
 
+                // EDGE CASES: Operators.
+                char[] operators = {':', '.', ',', '=', '>', '<', '+', '-', '*', '/', '[', ']', '(', ')', '\"'};
+                if (containsChar(character, operators)) {
 
-                // EDGE CASES: Single-char operators.
-                if (character == ':') {
+                    // Since operators are delimiters, temp (if it exists) must be an ID.
                     if (!temp.isEmpty()) {
                         LexedTokens.add(new Token(66, "Identifier", temp));
                         temp = "";
                     }
-                    LexedTokens.add(new Token(47, "COLON_operator", ":"));
-                    continue;
-                } else if (character == '.') {
-                    if (!temp.isEmpty()) {
-                        LexedTokens.add(new Token(66, "Identifier", temp));
-                        temp = "";
+
+                    // Go through all possible operators in TokenTypes.
+                    for (Token token : TokenTypes) {
+                        if (token.value.charAt(0) == character) {
+                            if (character == '<' || character == '>') {
+                                if (lookAheadOneChar(readerPosition, filePath) == '=') {
+                                    reader.read();
+                                    readerPosition++;
+                                    if (character == '<') LexedTokens.add(new Token(62, "LESS_EQUAL_operator", "<="));
+                                    if (character == '>') LexedTokens.add(new Token(63, "GREATER_EQUAL_operator", ">="));
+                                }
+                                else LexedTokens.add(new Token(token.category, token.categoryName, String.valueOf(character)));
+                                break;
+                            }
+                            LexedTokens.add(new Token(token.category, token.categoryName, String.valueOf(character)));
+                            break;
+                        }
                     }
-                    LexedTokens.add(new Token(48, "PERIOD_operator", "."));
-                    continue;
-                } else if (character == ',') {
-                    if (!temp.isEmpty()) {
-                        LexedTokens.add(new Token(66, "Identifier", temp));
-                        temp = "";
-                    }
-                    LexedTokens.add(new Token(49, "COMMA_operator", ","));
-                    continue;
-                } else if (character == '=') {
-                    if (!temp.isEmpty()) {
-                        LexedTokens.add(new Token(66, "Identifier", temp));
-                        temp = "";
-                    }
-                    LexedTokens.add(new Token(50, "EQUALITY_operator", "="));
-                    continue;
-                } else if (character == '>') {
-                    if (!temp.isEmpty()) {
-                        LexedTokens.add(new Token(66, "Identifier", temp));
-                        temp = "";
-                    }
-                    // EDGE CASE: Two-char operator
-                    BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
-                    tempReader.skip(readerPosition); // Lookahead.
-                    if (tempReader.read() == '=') {
-                        reader.read();
-                        readerPosition++;
-                        LexedTokens.add(new Token(63, "GREATER_EQUAL_operator", ">="));
-                        continue;
-                    }
-                    LexedTokens.add(new Token(51, "GREATER_operator", ">"));
-                    continue;
-                } else if (character == '<') {
-                    if (!temp.isEmpty()) {
-                        LexedTokens.add(new Token(66, "Identifier", temp));
-                        temp = "";
-                    }
-                    // EDGE CASE: Two-char operator
-                    BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
-                    tempReader.skip(readerPosition); // Lookahead.
-                    if (tempReader.read() == '=') {
-                        reader.read();
-                        readerPosition++;
-                        LexedTokens.add(new Token(62, "LESS_EQUAL_operator", "<="));
-                        continue;
-                    }
-                    LexedTokens.add(new Token(52, "LESS_operator", "<"));
-                    continue;
-                } else if (character == '+') {
-                    if (!temp.isEmpty()) {
-                        LexedTokens.add(new Token(66, "Identifier", temp));
-                        temp = "";
-                    }
-                    LexedTokens.add(new Token(53, "PLUS_operator", "+"));
-                    continue;
-                } else if (character == '-') {
-                    if (!temp.isEmpty()) {
-                        LexedTokens.add(new Token(66, "Identifier", temp));
-                        temp = "";
-                    }
-                    LexedTokens.add(new Token(54, "MINUS_operator", "-"));
-                    continue;
-                } else if (character == '*') {
-                    if (!temp.isEmpty()) {
-                        LexedTokens.add(new Token(66, "Identifier", temp));
-                        temp = "";
-                    }
-                    LexedTokens.add(new Token(55, "MULTIPLY_operator", "*"));
-                    continue;
-                } else if (character == '/') {
-                    if (!temp.isEmpty()) {
-                        LexedTokens.add(new Token(66, "Identifier", temp));
-                        temp = "";
-                    }
-                    LexedTokens.add(new Token(56, "DIVIDE_operator", "/"));
-                    continue;
-                } else if (character == '[') {
-                    if (!temp.isEmpty()) {
-                        LexedTokens.add(new Token(66, "Identifier", temp));
-                        temp = "";
-                    }
-                    LexedTokens.add(new Token(57, "LEFT_SQR_BRACE_operator", "["));
-                    continue;
-                } else if (character == ']') {
-                    if (!temp.isEmpty()) {
-                        LexedTokens.add(new Token(66, "Identifier", temp));
-                        temp = "";
-                    }
-                    LexedTokens.add(new Token(58, "RIGHT_SQR_BRACE_operator", "]"));
-                    continue;
-                } else if (character == '(') {
-                    if (!temp.isEmpty()) {
-                        LexedTokens.add(new Token(66, "Identifier", temp));
-                        temp = "";
-                    }
-                    LexedTokens.add(new Token(59, "LEFT_PAREN_operator", "("));
-                    continue;
-                } else if (character == ')') {
-                    if (!temp.isEmpty()) {
-                        LexedTokens.add(new Token(66, "Identifier", temp));
-                        temp = "";
-                    }
-                    LexedTokens.add(new Token(60, "RIGHT_PAREN_operator", ")"));
-                    continue;
-                } else if (character == '"') {
-                    if (!temp.isEmpty()) {
-                        LexedTokens.add(new Token(66, "Identifier", temp));
-                        temp = "";
-                    }
-                    LexedTokens.add(new Token(61, "DOUBLE_QUOTE_operator", "\""));
                     continue;
                 }
 
@@ -358,12 +282,8 @@ public class Main {
 
                         // EDGE CASE: Keyword inside a keyword.
                         if (temp.equals("not") || temp.equals("Not")) {
-                            BufferedReader tempReader = new BufferedReader(new FileReader(filePath));
-                            tempReader.skip(readerPosition); // Lookahead.
-                            int tempAscii = tempReader.read();
-                            char tempCharacter = (char) tempAscii;
 
-                            if (tempCharacter == '=') {
+                            if (lookAheadOneChar(readerPosition, filePath) == '=') {
                                 int x = reader.read();
                                 temp = temp + (char) x;
                                 readerPosition++;
@@ -373,7 +293,7 @@ public class Main {
                                 KeywordCandidates.addAll(TokenTypes);
                                 break;
 
-                            } else if (!Character.isLetterOrDigit(tempCharacter)){
+                            } else if (!Character.isLetterOrDigit(lookAheadOneChar(readerPosition, filePath))){
                                 LexedTokens.add(new Token(45, "NOT_operator", temp));
                                 temp = "";
                                 KeywordCandidates.clear();
@@ -381,29 +301,28 @@ public class Main {
                                 break;
                             }
 
-                            else{ // It's an identifier.
-                                BufferedReader tempReader2 = new BufferedReader(new FileReader(filePath));
-                                tempReader2.skip(readerPosition); // Lookahead.
-                                int lookAhead = 0;
-                                while (true){
-                                    int tempAscii2 = tempReader2.read();
-                                    char tempCharacter2 = (char) tempAscii2;
-                                    if (!Character.isLetterOrDigit(tempCharacter2)) break;
-                                    lookAhead++;
-                                }
-                                for (int j = 0; j < lookAhead; j++){
-                                    int x = reader.read();
-                                    char y =  (char) x;
-                                    temp = temp + y;
-                                    readerPosition++;
-                                }
-                                Token token = new Token(66, "Identifier", temp);
-                                temp = "";
-                                LexedTokens.add(token);
-                                KeywordCandidates.clear();
-                                KeywordCandidates.addAll(TokenTypes);
-                                break;
-                            }
+//                            else{ // It's an identifier.
+//                                BufferedReader tempReader2 = new BufferedReader(new FileReader(filePath));
+//                                tempReader2.skip(readerPosition); // Lookahead.
+//                                int lookAhead = 0;
+//                                while (true){
+//                                    int tempAscii2 = tempReader2.read();
+//                                    char tempCharacter2 = (char) tempAscii2;
+//                                    if (!Character.isLetterOrDigit(tempCharacter2)) break;
+//                                    lookAhead++;
+//                                }
+//                                for (int j = 0; j < lookAhead; j++){
+//                                    int x = reader.read();
+//                                    char y =  (char) x;
+//                                    temp = temp + y;
+//                                    readerPosition++;
+//                                }
+//                                Token token = new Token(66, "Identifier", temp);
+//                                temp = "";
+//                                LexedTokens.add(token);
+//                                repopulate(KeywordCandidates, TokenTypes);
+//                                break;
+//                            }
                         }
 
                         // Lookahead one token to finally confirm its a keyword.
@@ -417,12 +336,10 @@ public class Main {
                             Token token = new Token(KeywordCandidates.get(i).category, KeywordCandidates.get(i).categoryName, KeywordCandidates.get(i).value);
                             LexedTokens.add(token);
                             temp = "";
-                            KeywordCandidates.clear();
-                            KeywordCandidates.addAll(TokenTypes);
+                            repopulate(KeywordCandidates, TokenTypes);
                             break;
                         } else {
-                            KeywordCandidates.clear();
-                            KeywordCandidates.addAll(TokenTypes);
+                            repopulate(KeywordCandidates, TokenTypes);
                             break;
                         }
                     }
@@ -447,7 +364,6 @@ public class Main {
                         boolean isDecimal = false;
 
                         while (true) { // Loop through every character in the input file.
-                            // Read the character as an ASCII
                             int tempAscii = tempReader.read();
                             if (tempAscii == 46 && !isDecimal) {
                                 // If a '.' is ever read in FOR THE FIRST TIME, it must be a decimal.
@@ -519,21 +435,18 @@ public class Main {
                     }
 
                     else { // If no matches above, the token must be an error.
-                        Token token = new Token(temp, true);
-                        LexedTokens.add(token);
+                        LexedTokens.add(new Token(temp, true));
                     }
 
                     // Reset candidates and temp String.
-                    KeywordCandidates.clear();
-                    KeywordCandidates.addAll(TokenTypes);
+                    repopulate(KeywordCandidates, TokenTypes);
                     temp = "";
                 }
-
             }
 
-            for (int i = 0; i < LexedTokens.size(); i++) {
-                LexedTokens.get(i).printToken();
-            }
+            // Print out all stored tokens.
+            for (Token lexedToken : LexedTokens) lexedToken.printToken();
+
 
         } catch (FileNotFoundException e) {
             System.out.println("ERROR: File not found.");
@@ -614,9 +527,6 @@ public class Main {
             new Token(67, "STRING", ""),
             new Token(68, "COMMENT", "")
     ));
-
-
-
 }
 
 

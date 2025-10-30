@@ -411,8 +411,7 @@ ERROR: ; is invalid.
 ERROR: ; is invalid.
 ERROR: ; is invalid.
 ERROR: _ is invalid.
-Token Category: 66, Category Name: Identifier, Value: notError
-ERROR: _ is invalid.
+Token Category: 66, Category Name: Identifier, Value: notError_
 Token Category: 68, Category Name: COMMENT, Value: /* ~ */
 Token Category: 65, Category Name: DECIMAL, Value: 12.243
 Token Category: 55, Category Name: MULTIPLY_operator, Value: *
